@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Sorting</title>
+<meta name="description" content="A very old hat, in four movements.">
+<meta name="theme-color" content="#120807">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="The Sorting">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%236E1219'/%3E%3Ccircle cx='32' cy='32' r='24' fill='none' stroke='%23C9A227' stroke-width='1.5'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='Georgia' font-size='28' fill='%23F0E2C4'%3EH%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=IM+Fell+English:ital@0;1&family=Spectral:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Karla:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#120807; --ink-2:#1C0D0B; --ink-3:#2C1612;
+  --candle:#D4A84B; --candle-dim:#8A6A32;
+  --parch:#F0E2C4; --parch-deep:#E4D2A6; --dim:#B39B72;
+  --wax:#6E1219; --wax-lit:#8F1C24;
+  --gold:#C9A227; --gold-soft:rgba(201,162,39,.38);
+  --house:#C9A227;
+  --display:"IM Fell English SC",Georgia,serif;
+  --letterface:"IM Fell English",Georgia,serif;
+  --body:"Spectral",Georgia,serif;
+  --util:"Karla",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+html{color-scheme:dark;background:var(--ink)}
+body{
+  background:
+    radial-gradient(ellipse 100% 55% at 50% -8%, rgba(110,18,25,.55), transparent 58%),
+    radial-gradient(ellipse 70% 45% at 50% 110%, rgba(8,3,2,.95), transparent 60%),
+    var(--ink);
+  color:var(--parch);font-family:var(--body);font-weight:300;font-size:17px;line-height:1.6;
+  min-height:100vh;-webkit-font-smoothing:antialiased
+}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;background:
+  radial-gradient(1.2px 1.2px at 12% 18%,rgba(212,168,75,.55),transparent),
+  radial-gradient(1px 1px at 78% 9%,rgba(240,226,196,.4),transparent),
+  radial-gradient(1px 1px at 34% 62%,rgba(212,168,75,.28),transparent),
+  radial-gradient(1.2px 1.2px at 89% 74%,rgba(240,226,196,.38),transparent),
+  radial-gradient(1px 1px at 55% 33%,rgba(212,168,75,.22),transparent),
+  radial-gradient(1px 1px at 22% 88%,rgba(240,226,196,.28),transparent),
+  radial-gradient(1px 1px at 66% 51%,rgba(212,168,75,.18),transparent),
+  radial-gradient(1.2px 1.2px at 5% 45%,rgba(240,226,196,.32),transparent)}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse at center,transparent 42%,rgba(0,0,0,.5) 100%)}
+#wash{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0;
+  background:
+    radial-gradient(100% 70% at 50% 0%,var(--house) 0%,transparent 58%),
+    radial-gradient(60% 40% at 50% 100%,var(--house) 0%,transparent 55%);
+  transition:opacity 1.6s ease}
+#wash.on{opacity:.22}
+.stage{position:relative;z-index:1;max-width:640px;margin:0 auto;padding:36px 22px 90px;min-height:100vh;display:flex;flex-direction:column;justify-content:center}
+
+.eyebrow{font-family:var(--util);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--dim);margin:0 0 14px}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(36px,10.5vw,58px);line-height:1.02;margin:0 0 8px;color:var(--parch)}
+h1::after{content:"";display:block;width:72px;height:1px;margin:14px 0 0;
+  background:linear-gradient(90deg,var(--candle),transparent);
+  box-shadow:0 0 10px rgba(212,168,75,.45)}
+.env-wrap h1::after,.cert-wrap h1::after{margin-left:auto;margin-right:auto}
+.sub{color:var(--dim);font-size:16px;margin:0 0 30px;font-style:italic;line-height:1.6}
+.q{font-weight:400;font-size:clamp(19px,4.9vw,24px);line-height:1.4;margin:0 0 24px}
+
+.candles{display:flex;justify-content:center;margin:0 0 28px;height:20px;align-items:flex-end;flex-wrap:wrap}
+.grp{display:flex;gap:5px;align-items:flex-end;margin:0 7px}
+.candle{width:4px;height:4px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;background:var(--ink-3);transition:background .4s ease}
+.candle.lit{background:var(--candle);box-shadow:0 0 6px rgba(212,168,75,.75)}
+.candle.now{background:var(--candle);box-shadow:0 0 12px rgba(212,168,75,1);height:9px;animation:flicker 1.6s ease-in-out infinite}
+@keyframes flicker{0%,100%{opacity:1;transform:scaleY(1)}45%{opacity:.72;transform:scaleY(.82)}70%{opacity:.95;transform:scaleY(1.08)}}
+
+.opt{display:block;width:100%;text-align:left;cursor:pointer;background:rgba(28,13,11,.88);color:var(--parch);border:1px solid rgba(201,162,39,.28);border-radius:2px;padding:14px 16px 14px 42px;margin:0 0 9px;position:relative;font-family:var(--body);font-weight:300;font-size:16.5px;line-height:1.45;transition:border-color .18s ease,background .18s ease,transform .12s ease,box-shadow .18s ease}
+.opt::before{content:"";position:absolute;left:15px;top:19px;width:10px;height:10px;border-radius:50%;border:1px solid var(--candle-dim);transition:background .18s ease,box-shadow .18s ease}
+.opt:hover,.opt:focus-visible{border-color:rgba(212,168,75,.55);background:var(--ink-3);outline:none;box-shadow:0 0 0 1px rgba(212,168,75,.12)}
+.opt:hover::before,.opt:focus-visible::before{background:var(--wax);box-shadow:0 0 0 2px rgba(110,18,25,.45),0 0 8px rgba(201,162,39,.35)}
+.opt:active{transform:scale(.995)}
+
+.ghost{background:none;border:none;color:var(--dim);font-family:var(--util);font-size:12px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;padding:8px 2px}
+.ghost:hover,.ghost:focus-visible{color:var(--candle);outline:none}
+.seal-btn{display:inline-block;background:radial-gradient(circle at 30% 20%,var(--wax-lit),var(--wax) 68%);color:var(--parch);border:none;cursor:pointer;font-family:var(--util);font-weight:500;font-size:13px;letter-spacing:.16em;text-transform:uppercase;padding:15px 30px;border-radius:2px;box-shadow:0 1px 0 #4A0C10,0 8px 22px rgba(0,0,0,.45);transition:background .18s ease,transform .12s ease,box-shadow .18s ease}
+.seal-btn:hover,.seal-btn:focus-visible{background:radial-gradient(circle at 30% 20%,#A8242C,var(--wax-lit) 70%);outline:none;box-shadow:0 1px 0 #4A0C10,0 10px 26px rgba(110,18,25,.45)}
+.seal-btn:active{transform:scale(.98)}
+.seal-btn.wide{width:100%}
+.seal-btn.quiet{background:transparent;color:var(--dim);border:1px solid rgba(201,162,39,.28);box-shadow:none}
+.seal-btn.quiet:hover{color:var(--parch);border-color:rgba(212,168,75,.55);background:transparent}
+
+input[type=text]{width:100%;background:rgba(28,13,11,.88);border:1px solid rgba(201,162,39,.22);border-radius:2px;color:var(--parch);font-family:var(--body);font-size:18px;padding:14px 16px;margin:0 0 8px}
+input[type=text]:focus{outline:none;border-color:var(--candle);box-shadow:0 0 0 3px rgba(201,162,39,.12)}
+input[type=text]::placeholder{color:#7A684C}
+.err{color:#E39A8A;font-family:var(--util);font-size:13px;margin:0 0 12px;min-height:18px}
+
+.murmur{font-style:italic;font-size:19px;line-height:1.55;margin:0 0 16px;opacity:0}
+.murmur.show{animation:rise .9s ease forwards}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:.92;transform:none}}
+
+.house{font-family:var(--display);font-weight:400;font-size:clamp(40px,12.5vw,72px);line-height:1;margin:4px 0 10px;color:var(--house);text-shadow:0 0 28px rgba(201,162,39,.35)}
+.house-line{font-size:17px;line-height:1.6;margin:0 0 30px;opacity:.9}
+.reveal{animation:bloom 1.1s cubic-bezier(.16,.8,.3,1) forwards}
+@keyframes bloom{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:none}}
+.tally{border-top:1px solid var(--gold-soft);padding-top:22px;margin-top:8px}
+.row{margin:0 0 15px}
+.row-top{display:flex;justify-content:space-between;align-items:baseline;font-family:var(--util);font-size:13px;letter-spacing:.06em}
+.row-top .n{color:var(--dim)}
+.track{height:3px;background:rgba(240,226,196,.1);margin-top:7px;overflow:hidden}
+.track i{display:block;height:100%;width:0;transition:width 1.1s cubic-bezier(.2,.7,.3,1)}
+.note{color:var(--dim);font-size:15.5px;font-style:italic;line-height:1.6;margin:20px 0 0}
+
+.env-wrap{display:flex;flex-direction:column;align-items:center;text-align:center}
+.envelope{position:relative;width:min(340px,88vw);aspect-ratio:1.6/1;background:
+  linear-gradient(180deg,rgba(255,255,255,.08),transparent 30%),
+  repeating-linear-gradient(90deg,transparent,transparent 18px,rgba(90,70,30,.04) 18px,rgba(90,70,30,.04) 19px),
+  var(--parch-deep);
+  border-radius:3px;cursor:pointer;border:1px solid #C4A35A;padding:0;margin:8px 0 22px;
+  box-shadow:0 18px 50px rgba(0,0,0,.6), inset 0 0 0 3px #EFE3C6}
+.envelope::after{content:"";position:absolute;inset:0;border-radius:3px;background:linear-gradient(160deg,rgba(0,0,0,.06),transparent 40%)}
+.flap{position:absolute;top:0;left:0;right:0;height:56%;background:#D8C49A;clip-path:polygon(0 0,100% 0,50% 100%);transform-origin:top center;transition:transform .9s cubic-bezier(.5,0,.4,1)}
+.envelope.open .flap{transform:rotateX(160deg)}
+.wax{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:74px;height:74px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#A8242C,var(--wax) 62%);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:30px;color:rgba(240,226,196,.92);box-shadow:inset 0 -3px 8px rgba(0,0,0,.35),0 0 0 3px rgba(201,162,39,.25),0 3px 10px rgba(0,0,0,.4);z-index:3;transition:transform .5s ease,opacity .5s ease}
+.envelope.open .wax{transform:translate(-50%,-50%) scale(1.4) rotate(-14deg);opacity:0}
+.addr{position:absolute;left:0;right:0;bottom:11%;font-family:var(--letterface);font-style:italic;font-size:15px;color:#3A3020;line-height:1.45;padding:0 14px;z-index:2}
+
+.parchment{background:
+  linear-gradient(180deg,rgba(255,255,255,.14),transparent 18%),
+  var(--parch);
+  color:#2B2418;border-radius:2px;border:1px solid #C4A35A;
+  box-shadow:inset 0 0 0 5px #F3E6C8, inset 0 0 0 6px #C4A35A, 0 20px 60px rgba(0,0,0,.6)}
+.letter{padding:34px 26px 30px;font-family:var(--letterface);font-size:17.5px;line-height:1.62;animation:bloom 1s cubic-bezier(.16,.8,.3,1) forwards}
+.letter h2{font-family:var(--display);font-weight:400;font-size:23px;line-height:1.1;text-align:center;margin:0 0 2px;color:#2B2418}
+.letter .crest{text-align:center;font-family:var(--letterface);font-style:italic;font-size:14px;color:#6B5C41;margin:0 0 4px}
+.letter .rule{height:1px;background:linear-gradient(90deg,transparent,#B9A97F,transparent);margin:16px 0 20px}
+.letter p{margin:0 0 15px}
+.letter .sig{font-family:var(--display);font-size:19px;margin:22px 0 0}
+.letter .sigrole{font-family:var(--letterface);font-style:italic;font-size:14px;color:#6B5C41;margin:2px 0 0}
+
+.cert{padding:34px 24px 28px;text-align:center;font-family:var(--letterface)}
+.cert .k{font-family:var(--util);font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;color:#7A6A4C;margin:0 0 18px}
+.cert .who{font-family:var(--display);font-size:clamp(26px,7.5vw,36px);line-height:1.1;margin:0 0 14px}
+.cert .mid{font-style:italic;font-size:16px;color:#5C4F38;margin:0 0 6px}
+.cert .hs{font-family:var(--display);font-size:clamp(30px,9vw,44px);line-height:1;margin:0 0 18px;color:var(--house)}
+.cert .why{font-size:15.5px;line-height:1.55;color:#3A3225;margin:0 auto 22px;max-width:380px}
+.cert .stamp{width:88px;height:88px;border-radius:50%;background:var(--house);margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:36px;color:rgba(255,255,255,.92);box-shadow:inset 0 -4px 10px rgba(0,0,0,.3),0 0 0 3px rgba(201,162,39,.35)}
+.cert .date{font-family:var(--util);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#7A6A4C}
+
+.door{position:fixed;right:12px;bottom:12px;width:16px;height:16px;border-radius:50%;background:rgba(201,162,39,.12);border:none;cursor:pointer;z-index:5}
+.door:hover,.door:focus-visible{background:rgba(212,168,75,.55);outline:none}
+.panel{background:rgba(28,13,11,.92);border:1px solid var(--gold-soft);border-radius:2px;padding:22px}
+.code{font-family:var(--util);font-size:clamp(22px,7vw,30px);letter-spacing:.18em;color:var(--candle);text-align:center;background:var(--ink);padding:16px;border-radius:2px;margin:6px 0 4px;word-break:break-all;border:1px solid rgba(201,162,39,.18)}
+.warn{font-family:var(--util);font-size:12px;letter-spacing:.06em;color:#E39A8A;margin:0 0 16px}
+.stack > *{margin-bottom:10px}
+.stack > *:last-child{margin-bottom:0}
+.copied{font-family:var(--util);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--candle);text-align:center;min-height:18px;margin:0 0 4px}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.murmur{opacity:.92}#wash.on{opacity:.22}}
+</style>
+</head>
+<body>
+<div id="wash"></div>
+<main class="stage" id="stage" aria-live="polite"></main>
+<button class="door" id="door" aria-label="Keeper"></button>
+
+<script>
+/* ─────────────────────────────────────────────
+   EDIT THESE FIVE LINES AND NOTHING ELSE
+   The keeper word is visible if someone views
+   the page source — change it before you publish.
+   ───────────────────────────────────────────── */
+var CONFIG = {
+  student:    "Rosie",
+  revealDate: "2026-09-03",
+  address:    "The bedroom at the top of the stairs",
+  signedBy:   "Prof. E. Whitlock",
+  keeperWord: "keeper"
+};
+/* ───────────────────────────────────────────── */
+
+var MOVEMENTS=[
+ {n:"Movement I",t:"What you would do",w:2,
+  intro:"The Hat does not care what you say about yourself. It starts with what you do when something is actually at stake.",
+  cta:"Begin"},
+ {n:"Movement II",t:"What you would give up",w:2,
+  intro:"The Hat has heard enough about what you would do. Now it wants to know what it would cost you. Anyone can want everything. The answer is in what you let go of.",
+  cta:"Go on"},
+ {n:"Movement III",t:"What you are",w:1,
+  intro:"Almost finished. These last ones the Hat weighs lightly, because people are not always the best judges of themselves. But it likes to hear you say it.",
+  cta:"Nearly there"},
+ {n:"Movement IV",t:"One last question",w:1,
+  intro:"There is one thing left, and it is the only question in the whole ceremony where your own opinion is admitted as evidence.",
+  cta:"Ask it"}
+];
+
+var QUESTIONS=[
+/* ── I. behaviour under cost ─────────────── */
+{m:0,q:"There is a door at the end of a corridor that is always locked, and everyone has been told to stay away from it.",o:[
+ ["Try the handle tonight, while nobody is looking",{G:3,S:2}],
+ ["Find out first who locked it, and why",{R:3,S:1}],
+ ["Leave it alone. If it is locked, there is a reason",{H:3,R:1}],
+ ["Get a friend to come with you and go together",{G:2,H:2}]]},
+{m:0,q:"A new girl is eating lunch by herself. Your table is full and your friends do not want to shuffle up.",o:[
+ ["Go and sit with her, even if nobody follows you",{G:3,H:1}],
+ ["Squeeze her in anyway, and deal with your friends after",{H:3,G:1}],
+ ["Work out why nobody has already included her before you do anything",{R:3}],
+ ["Bring her over in a way that makes it look like everyone's idea",{S:3,H:1}]]},
+{m:0,q:"You get put in a group for a big project. What do you actually end up doing?",o:[
+ ["Deciding who does what",{S:3,G:1}],
+ ["The research, and then quietly checking everyone else's",{R:3}],
+ ["Whatever nobody else wants to do, without making a thing of it",{H:3}],
+ ["Pushing the idea everyone is too nervous to try",{G:3,S:1}]]},
+{m:0,q:"You and a friend break a rule. Only you get caught, and she would be in far worse trouble than you.",o:[
+ ["Take the whole blame yourself",{G:3,H:2}],
+ ["Tell the exact truth and take whatever comes",{H:2,R:2}],
+ ["Talk your way out of it for both of you",{S:3,R:1}],
+ ["Say nothing at all",{S:2,H:1,G:1}]]},
+{m:0,q:"A much smaller kid is getting picked on by someone much bigger than both of you.",o:[
+ ["Step between them right now",{G:3}],
+ ["Go and get a teacher",{R:3,H:1}],
+ ["Make sure the bully regrets it later",{S:3}],
+ ["Find the kid afterwards and make sure they are all right",{H:3}]]},
+{m:0,q:"Your team is losing badly and there is no chance left of winning.",o:[
+ ["Play harder anyway",{G:3,H:1}],
+ ["Play for pride, and refuse to let it get any worse",{H:2,G:1,S:1}],
+ ["Study them, so that you win the next one",{R:3,S:1}],
+ ["Throw out the plan and try something wild",{S:2,G:1,R:1}]]},
+{m:0,q:"Someone tells you a secret about your friend, and it was not theirs to tell.",o:[
+ ["Keep it. Always",{H:3}],
+ ["Tell your friend. She deserves to know it is out there",{G:2,H:1}],
+ ["File it away. It might matter one day",{S:3}],
+ ["Work out why you were told it in the first place",{R:3}]]},
+{m:0,q:"A friend copies your work without asking you first.",o:[
+ ["Say something to her face, straight away",{G:3}],
+ ["Say nothing, and never leave your work where she can see it again",{S:2,R:1}],
+ ["Let it go. She probably needed it more than you needed the credit",{H:3}],
+ ["Ask her why. There may be something going on you do not know about",{R:2,H:2}]]},
+{m:0,q:"A teacher punishes the whole class for something one person did, and you know exactly who did it.",o:[
+ ["Say out loud that it is not fair, without naming anyone",{G:2,H:2}],
+ ["Take it along with everyone else. Nobody likes a tell-tale",{H:3}],
+ ["Have a quiet word with the teacher afterwards",{R:2,G:1,S:1}],
+ ["Let the person who did it know that you know",{S:3}]]},
+{m:0,q:"You can bring exactly one person to something amazing, and two friends both want to come.",o:[
+ ["Take the one who would love it the most",{H:3}],
+ ["Take the one who would be the most fun to have there",{G:2,S:1}],
+ ["Tell them both the truth and let them work it out between them",{G:2,H:1,R:1}],
+ ["Find some way to get all three of you in",{S:2,R:2}]]},
+{m:0,q:"You practised something for weeks, and on the day, in front of everyone, you completely freeze.",o:[
+ ["Push through it even though it is a mess",{G:3,H:1}],
+ ["Stop, say sorry, and get down",{H:2,R:1}],
+ ["Make a joke of it and turn it into something else entirely",{S:2,G:1,R:1}],
+ ["Go home and work out precisely what went wrong",{R:3,S:1}]]},
+{m:0,q:"Your friend group starts leaving one girl out. Slowly. Nobody ever says it out loud.",o:[
+ ["Say it out loud",{G:3}],
+ ["Stay her friend separately, whatever the group does",{H:3}],
+ ["Work out who started it, and why",{R:3}],
+ ["Stay in the group, but keep her close enough that it does not stick",{S:2,H:1,R:1}]]},
+{m:0,q:"A grown-up you trust turns out to be wrong about something that matters, and you can prove it.",o:[
+ ["Say so, politely, right there and then",{G:3,R:1}],
+ ["Bring them the proof privately, later",{R:2,H:1,S:1}],
+ ["Let it go. It is not worth the trouble it would cause",{H:2,S:1}],
+ ["Remember it. It will be useful eventually",{S:3}]]},
+{m:0,q:"You find an old book with a warning inked inside the cover: do not read past chapter three.",o:[
+ ["Read the whole thing that night",{R:2,G:2}],
+ ["Read up to chapter three and stop",{H:3}],
+ ["Read all of it, and tell nobody you have it",{S:3,R:1}],
+ ["Take it straight to a grown-up",{H:2,R:1,G:1}]]},
+{m:0,q:"Someone you genuinely do not like needs help, and you are the only one who can give it.",o:[
+ ["Help straight away, no hesitating",{G:3,H:1}],
+ ["Help, and make sure she knows it was you",{S:2,G:1}],
+ ["Help quietly and never mention it again",{H:3}],
+ ["Think it through first. Is helping actually the right call here?",{R:3,S:1}]]},
+
+/* ── II. what it costs ───────────────────── */
+{m:1,q:"Which of these would be the worst to live with?",o:[
+ ["Everyone thinks you are a coward, and only you know you are not",{G:3}],
+ ["Everyone thinks you are clever, and only you know you are not",{R:3}],
+ ["Everyone likes you, and nobody quite trusts you",{H:3}],
+ ["You do all of it right, and somebody else gets the credit",{S:3}]]},
+{m:1,q:"You are offered one thing, permanently. Choose.",o:[
+ ["Never to be afraid again",{G:3}],
+ ["Always to know the right answer",{R:3}],
+ ["Never to be let down by anyone",{H:3}],
+ ["Always to get the thing you go after",{S:3}]]},
+{m:1,q:"Which trade would you actually take?",o:[
+ ["Win, but nobody ever finds out it was you",{H:3}],
+ ["Lose, but everyone sees exactly how hard you fought",{G:2,S:1}],
+ ["Win, and everybody knows precisely how you did it",{S:3}],
+ ["Skip the whole thing and go and find out something nobody else knows",{R:3}]]},
+{m:1,q:"You get to be remembered for exactly one thing.",o:[
+ ["Something you did that took guts",{G:3}],
+ ["Something you made, or worked out, that nobody had before",{R:3}],
+ ["Someone you stood by when it was hard",{H:3}],
+ ["Something everyone said could not be done",{S:3}]]},
+{m:1,q:"Someone else is going to get the thing you wanted most, and you are the one who chooses who.",o:[
+ ["The one who worked hardest for it",{H:3}],
+ ["The one who would do the most with it",{R:2,S:1}],
+ ["The one who was brave enough to ask for it",{G:3}],
+ ["Nobody. Better unclaimed than wasted",{S:2,R:1}]]},
+{m:1,q:"Ten years from now, what do you want to be the person people call about?",o:[
+ ["When it is frightening",{G:3}],
+ ["When they are stuck",{R:3}],
+ ["When they are sad",{H:3}],
+ ["When it has to get done",{S:3}]]},
+{m:1,q:"You can have your name on it, or you can have it turn out right. Not both.",o:[
+ ["It turns out right, and nobody knows you were anywhere near it",{H:3}],
+ ["Your name is on it, whatever happens next",{S:3}],
+ ["It turns out right, and you say plainly that it was you",{G:3}],
+ ["It turns out right, and you keep a record of the truth for later",{R:3}]]},
+
+/* ── III. self-knowledge, weighted lightly ─ */
+{m:2,q:"Be honest. What is your worst habit?",o:[
+ ["I jump in before I think",{G:3}],
+ ["I can be a bit of a know-it-all",{R:3}],
+ ["I let people take advantage of me",{H:3}],
+ ["I want to win more than I want to be liked",{S:3}]]},
+{m:2,q:"Which would sting the most to be called?",o:[
+ ["A coward",{G:3}],["Stupid",{R:3}],["Disloyal",{H:3}],["Ordinary",{S:3}]]},
+{m:2,q:"What do people say about you when you are not in the room?",o:[
+ ["She will say the thing everyone else is thinking",{G:3}],
+ ["She notices everything",{R:3}],
+ ["She never bails on anyone",{H:3}],
+ ["She does not stop",{S:3}]]},
+{m:2,q:"When something has really upset you, what actually helps?",o:[
+ ["Doing something. Anything. Moving",{G:2,S:1}],
+ ["Understanding why it happened",{R:3}],
+ ["Somebody sitting with you",{H:3}],
+ ["Getting straight back to work on it",{S:3}]]},
+
+/* ── IV. the choice ──────────────────────── */
+{m:3,q:"Now and then a girl already knows where she belongs before the Hat has so much as touched her head. Are you one of them?",o:[
+ ["Gryffindor",{G:5}],["Hufflepuff",{H:5}],["Ravenclaw",{R:5}],["Slytherin",{S:5}]]}
+];
+
+var HOUSES={
+G:{name:"Gryffindor",c:"#C11F2A",mark:"G",
+   line:"Sorted for nerve. Not the absence of fear, which is a different and much duller thing, but the habit of moving anyway.",
+   loud:"There is courage in here, and it is not being quiet about it.",
+   quiet:"And underneath it, a nerve that would surprise the people who think they already know you.",
+   cert:"For nerve, and for the habit of moving anyway."},
+H:{name:"Hufflepuff",c:"#E0A825",mark:"H",
+   line:"Sorted for loyalty and honest work. The house everyone underestimates, right up until they notice it was the steadiest one in the room.",
+   loud:"Loyal. Genuinely loyal, which is far rarer than it sounds.",
+   quiet:"And a sense of fairness that will not bend, even when bending would be easier.",
+   cert:"For loyalty, patience, and work done without applause."},
+R:{name:"Ravenclaw",c:"#2C4A8C",mark:"R",
+   line:"Sorted for a mind that will not sit still. Curiosity first, cleverness second, and the patience to keep asking after everyone else has stopped.",
+   loud:"A mind that notices things. It is already three questions ahead of me.",
+   quiet:"And a curiosity that is going to get you into trouble one day. The good kind.",
+   cert:"For a curious mind that keeps asking after everyone else has stopped."},
+S:{name:"Slytherin",c:"#2A6B4A",mark:"S",
+   line:"Sorted for ambition and resourcefulness. A house that decides what it wants and then quietly works out how.",
+   loud:"Ambition. Clear as a bell, and no apology for it either.",
+   quiet:"And somewhere under that, a determination that does not much care who approves.",
+   cert:"For ambition, resourcefulness, and knowing what you are after."}
+};
+
+var ORDER=["G","H","R","S"];
+var STD="0123456789abcdefghijklmnopqrstuvwxyz";
+var SUB="q7m2x9k4zb3tr6hjp8wfnvdclgsy5ae01uio";
+var KEY="sorting.ceremony.v2";
+var ROMAN=["i","ii","iii","iv","v","vi","vii","viii","ix","x","xi","xii","xiii","xiv","xv","xvi","xvii","xviii","xix","xx","xxi","xxii","xxiii","xxiv","xxv","xxvi","xxvii"];
+
+var stage=document.getElementById("stage");
+var name_="",idx=0,score={G:0,H:0,R:0,S:0},picks={G:0,H:0,R:0,S:0},trail=[],deck=[];
+var PREVIEW=false;
+
+function esc(s){var d=document.createElement("div");d.textContent=s;return d.innerHTML}
+function pad2(n){var s=Math.max(0,Math.min(1295,Math.round(n))).toString(36);return s.length<2?"0"+s:s}
+function encode(h,sc){
+  var raw=String(ORDER.indexOf(h))+pad2(sc.G)+pad2(sc.H)+pad2(sc.R)+pad2(sc.S),out="";
+  for(var i=0;i<raw.length;i++){out+=SUB.charAt(STD.indexOf(raw.charAt(i)))}
+  return (out.slice(0,3)+"-"+out.slice(3,6)+"-"+out.slice(6,9)).toUpperCase();
+}
+function decode(str){
+  var c=(str||"").toLowerCase().replace(/[^a-z0-9]/g,""),raw="";
+  if(c.length!==9)return null;
+  for(var i=0;i<9;i++){var k=SUB.indexOf(c.charAt(i));if(k<0)return null;raw+=STD.charAt(k)}
+  var h=ORDER[parseInt(raw.charAt(0),10)];if(!h)return null;
+  return {h:h,sc:{G:parseInt(raw.substr(1,2),36),H:parseInt(raw.substr(3,2),36),
+                  R:parseInt(raw.substr(5,2),36),S:parseInt(raw.substr(7,2),36)}};
+}
+function save(o){
+  try{
+    if(o && o.score && (!o.house || ORDER.indexOf(o.house)<0)){
+      o.house=ranked(o.score,o.picks)[0];
+    }
+    localStorage.setItem(KEY,JSON.stringify(o));
+  }catch(e){}
+}
+function load(){
+  try{
+    var o=JSON.parse(localStorage.getItem(KEY));
+    if(!o || typeof o!=="object" || !o.name || !o.score) return null;
+    if(typeof o.score.G!=="number" || typeof o.score.H!=="number" ||
+       typeof o.score.R!=="number" || typeof o.score.S!=="number") return null;
+    o.picks=o.picks||{G:0,H:0,R:0,S:0};
+    if(!o.house || ORDER.indexOf(o.house)<0) o.house=ranked(o.score,o.picks)[0];
+    return o;
+  }catch(e){return null}
+}
+function wipe(){try{localStorage.removeItem(KEY)}catch(e){}}
+function revealDay(){var p=CONFIG.revealDate.split("-");return new Date(+p[0],+p[1]-1,+p[2],0,0,0)}
+function daysLeft(){var n=new Date();n.setHours(0,0,0,0);return Math.ceil((revealDay()-n)/86400000)}
+function itsTime(){var s=load();return (s&&s.unsealed===true)||daysLeft()<=0}
+function ranked(s,p,winner){
+  p=p||{G:0,H:0,R:0,S:0};
+  var order=ORDER.slice().sort(function(a,b){return (s[b]-s[a])||(p[b]-p[a])||ORDER.indexOf(a)-ORDER.indexOf(b)});
+  if(winner && ORDER.indexOf(winner)>=0){
+    order=[winner].concat(order.filter(function(h){return h!==winner}));
+  }
+  return order;
+}
+function longDate(){return new Date().toLocaleDateString(undefined,{day:"numeric",month:"long",year:"numeric"})}
+function copyText(t,done){
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(t).then(done).catch(function(){fallback()});
+  }else fallback();
+  function fallback(){
+    var n=document.createElement("textarea");n.value=t;n.setAttribute("readonly","");
+    n.style.position="fixed";n.style.left="-9999px";document.body.appendChild(n);
+    n.select();try{document.execCommand("copy");done()}catch(e){}document.body.removeChild(n);
+  }
+}
+
+function buildDeck(){
+  deck=[];
+  for(var i=0;i<QUESTIONS.length;i++){
+    var o=QUESTIONS[i].o.slice();
+    for(var j=o.length-1;j>0;j--){var k=Math.floor(Math.random()*(j+1)),t=o[j];o[j]=o[k];o[k]=t}
+    deck.push(o);
+  }
+}
+
+function route(){
+  PREVIEW=false;
+  var s=load();
+  if(!s) return welcome();
+  if(s.done) return certificate(s,true);
+  if(itsTime()) return envelope(s);
+  return holding(s);
+}
+
+function welcome(){
+  stage.innerHTML=
+   '<p class="eyebrow">A very old hat, in four movements</p>'+
+   '<h1>The Sorting</h1>'+
+   '<p class="sub">Twenty-seven questions, and about eight minutes. Answer honestly rather than cleverly &mdash; the Hat has been doing this for a thousand years and can tell the difference. It will not say one word about what it finds. Not today.</p>'+
+   '<label class="eyebrow" for="who" style="display:block">Who is being sorted?</label>'+
+   '<input type="text" id="who" value="'+esc(CONFIG.student)+'" autocomplete="off" spellcheck="false">'+
+   '<p class="err" id="err"></p>'+
+   '<button class="seal-btn wide" id="go">Put on the Hat</button>';
+  var input=document.getElementById("who"),err=document.getElementById("err");
+  input.addEventListener("input",function(){err.textContent=""});
+  input.addEventListener("keydown",function(e){if(e.key==="Enter")go()});
+  document.getElementById("go").onclick=go;
+  function go(){
+    var v=input.value.trim();
+    if(!v){err.textContent="The Hat needs a name before it can begin.";input.focus();return}
+    name_=v;idx=0;score={G:0,H:0,R:0,S:0};picks={G:0,H:0,R:0,S:0};trail=[];buildDeck();
+    interstitial(0);
+  }
+}
+
+function interstitial(m){
+  var mv=MOVEMENTS[m];
+  stage.innerHTML=
+   '<p class="eyebrow">'+mv.n+'</p>'+
+   '<h1>'+mv.t+'</h1>'+
+   '<p class="sub" style="margin-bottom:34px">'+mv.intro+'</p>'+
+   '<button class="seal-btn wide" id="on">'+mv.cta+'</button>';
+  document.getElementById("on").onclick=question;
+}
+
+function candles(){
+  var h='<div class="candles" aria-hidden="true">';
+  for(var m=0;m<MOVEMENTS.length;m++){
+    h+='<span class="grp">';
+    for(var j=0;j<QUESTIONS.length;j++){
+      if(QUESTIONS[j].m!==m)continue;
+      h+='<span class="candle'+(j<idx?" lit":(j===idx?" now":""))+'"></span>';
+    }
+    h+='</span>';
+  }
+  return h+"</div>";
+}
+
+function question(){
+  if(idx>=QUESTIONS.length)return sealIt();
+  var it=QUESTIONS[idx],opts=deck[idx],h=candles();
+  h+='<p class="eyebrow">'+MOVEMENTS[it.m].n+' &middot; question '+ROMAN[idx]+' of xxvii</p>';
+  h+='<p class="q">'+esc(it.q)+'</p>';
+  for(var i=0;i<opts.length;i++){h+='<button class="opt" data-i="'+i+'">'+esc(opts[i][0])+'</button>'}
+  if(idx>0)h+='<button class="ghost" id="back">&larr; Back</button>';
+  stage.innerHTML=h;
+  var os=stage.querySelectorAll(".opt");
+  for(var j=0;j<os.length;j++){os[j].onclick=function(){choose(parseInt(this.getAttribute("data-i"),10))}}
+  var b=document.getElementById("back");
+  if(b)b.onclick=function(){
+    var l=trail.pop();
+    for(var k in l.s){score[k]-=l.s[k]*l.w}
+    if(l.top)picks[l.top]--;
+    idx--;question();
+  };
+}
+
+function choose(i){
+  var it=QUESTIONS[idx],w=MOVEMENTS[it.m].w,s=deck[idx][i][1],top=null,best=0;
+  for(var k in s){score[k]+=s[k]*w;if(s[k]>best){best=s[k];top=k}}
+  if(top)picks[top]++;
+  trail.push({s:s,top:top,w:w});
+  idx++;
+  var next=QUESTIONS[idx];
+  if(next && next.m!==it.m) return interstitial(next.m);
+  question();
+}
+
+function sealIt(){
+  var r=ranked(score,picks);
+  save({name:name_,score:score,picks:picks,house:r[0],done:false,unsealed:false,when:Date.now()});
+  var d=daysLeft();
+  stage.innerHTML=
+   '<p class="eyebrow">Sealed</p><h1>Not a word</h1>'+
+   '<p class="sub">The Hat has read all twenty-seven answers and made up its mind. It is now refusing to speak, which it does with enormous satisfaction.</p>'+
+   '<p style="font-size:18px;line-height:1.6;margin:0 0 26px">Come back on <strong style="color:var(--candle);font-weight:400">'+
+     revealDay().toLocaleDateString(undefined,{day:"numeric",month:"long"})+'</strong>'+
+     (d>0?', in '+d+' day'+(d===1?"":"s")+',':'')+' and it will tell you where you belong.</p>'+
+   '<p class="eyebrow" style="margin:0">Close this page. Nothing more happens today.</p>';
+}
+function holding(s){
+  var d=daysLeft();
+  stage.innerHTML=
+   '<p class="eyebrow">Sealed</p><h1>Still waiting</h1>'+
+   '<p class="sub">The Hat has your answers, '+esc(s.name)+', and it is not budging.</p>'+
+   '<p style="font-size:20px;margin:0 0 30px"><strong style="color:var(--candle);font-weight:400">'+d+' day'+(d===1?"":"s")+'</strong> until it speaks.</p>'+
+   '<button class="ghost" id="codebtn">I have a sorting code</button>';
+  document.getElementById("codebtn").onclick=codeEntry;
+}
+
+function envelope(s){
+  document.getElementById("wash").classList.remove("on");
+  stage.innerHTML=
+   '<div class="env-wrap"><p class="eyebrow">Something arrived for you</p>'+
+   '<button class="envelope" id="env" aria-label="Break the seal and open the letter">'+
+   '<span class="flap"></span><span class="wax">H</span>'+
+   '<span class="addr">'+esc(s.name)+'<br>'+esc(CONFIG.address)+'</span></button>'+
+   '<p class="eyebrow" style="margin:0">Tap the seal</p></div>';
+  document.getElementById("env").onclick=function(){
+    this.classList.add("open");this.disabled=true;
+    setTimeout(function(){letter(s)},1000);
+  };
+}
+function letter(s){
+  stage.innerHTML=
+   '<div class="letter parchment"><h2>Hogwarts School</h2>'+
+   '<p class="crest">of Witchcraft and Wizardry</p><div class="rule"></div>'+
+   '<p>Dear Miss '+esc(s.name)+',</p>'+
+   '<p>We have been watching these last eleven years with a good deal of interest, and we are satisfied.</p>'+
+   '<p>A place has been kept for you here since the night you were born, written in a ledger that keeps itself, and this morning your name came up in fresh ink. It is a very fine name and it sits well on the page.</p>'+
+   '<p>Term begins whenever you are ready. Bring warm socks, a curious mind, and nothing you would be afraid to lose. You will be met at the gates.</p>'+
+   '<p>One matter remains before anything else can be settled. The Hat has already read your answers &mdash; all twenty-seven of them &mdash; and has been holding its tongue since August, which it does not enjoy and has mentioned to us more than once. It would like a word.</p>'+
+   '<p class="sig">'+esc(CONFIG.signedBy)+'</p>'+
+   '<p class="sigrole">Deputy Headmistress</p></div>'+
+   '<p style="margin-top:26px;text-align:center"><button class="seal-btn" id="toHat">Present yourself to the Hat</button></p>';
+  document.getElementById("toHat").onclick=function(){deliberate(s)};
+}
+
+function deliberate(s){
+  var r=ranked(s.score,s.picks,s.house);
+  var lines=["Hmm. "+s.name+". Let me have a proper look at you.",
+             HOUSES[r[0]].loud,HOUSES[r[1]].quiet,"Yes. I think that settles it."];
+  var h='<p class="eyebrow">The Hat is thinking</p>';
+  for(var i=0;i<lines.length;i++){h+='<p class="murmur" id="m'+i+'">'+esc(lines[i])+'</p>'}
+  stage.innerHTML=h;
+  lines.forEach(function(_,i){setTimeout(function(){
+    var el=document.getElementById("m"+i);if(el)el.classList.add("show")},300+i*1600)});
+  setTimeout(function(){reveal(s)},300+lines.length*1600+800);
+}
+function reveal(s){
+  var r=ranked(s.score,s.picks,s.house),win=HOUSES[r[0]];
+  var total=s.score.G+s.score.H+s.score.R+s.score.S||1;
+  document.documentElement.style.setProperty("--house",win.c);
+  document.getElementById("wash").classList.add("on");
+  var h='<div class="reveal"><p class="eyebrow">'+esc(s.name)+', the Hat has decided</p>'+
+        '<p class="house">'+win.name+'</p><p class="house-line">'+win.line+'</p>'+
+        '<div class="tally"><p class="eyebrow">How close it was</p>';
+  for(var i=0;i<r.length;i++){var k=r[i],p=Math.round(s.score[k]/total*100);
+    h+='<div class="row"><div class="row-top"><span>'+HOUSES[k].name+'</span><span class="n">'+p+'%</span></div>'+
+       '<div class="track"><i data-w="'+p+'" style="background:'+HOUSES[k].c+'"></i></div></div>'}
+  h+='</div>';
+  var gap=s.score[r[0]]-s.score[r[1]];
+  if(gap<=4){h+='<p class="note">A hatstall. '+HOUSES[r[0]].name+' and '+HOUSES[r[1]].name+
+    ' came within a whisker of each other, and the Hat had to weigh your own leanings to break the tie.</p>'}
+  else if(gap>=20){h+='<p class="note">No hesitation at all. The Hat knew by the second movement and spent the rest of it enjoying itself.</p>'}
+  h+='<p style="margin-top:30px"><button class="seal-btn wide" id="toCert">Receive your certificate</button></p></div>';
+  stage.innerHTML=h;
+  setTimeout(function(){var b=stage.querySelectorAll(".track i");
+    for(var i=0;i<b.length;i++){b[i].style.width=b[i].getAttribute("data-w")+"%"}},120);
+  document.getElementById("toCert").onclick=function(){
+    if(!PREVIEW){s.done=true;s.day=longDate();save(s)}
+    certificate(s,false)};
+}
+function certificate(s,returning){
+  var r=ranked(s.score,s.picks,s.house),win=HOUSES[r[0]];
+  document.documentElement.style.setProperty("--house",win.c);
+  document.getElementById("wash").classList.add("on");
+  stage.innerHTML=
+   '<div class="reveal"><div class="cert parchment">'+
+   '<p class="k">Hogwarts School of Witchcraft and Wizardry</p>'+
+   '<p class="who">'+esc(s.name)+'</p><p class="mid">has been sorted into</p>'+
+   '<p class="hs">'+win.name+'</p><p class="why">'+win.cert+'</p>'+
+   '<div class="stamp">'+win.mark+'</div>'+
+   '<p class="date">Sorted '+esc(s.day||longDate())+'</p></div>'+
+   '<p class="eyebrow" style="text-align:center;margin:20px 0 0">Screenshot this &mdash; it is the only copy</p>'+
+   (returning?'<p style="text-align:center;margin-top:18px"><button class="ghost" id="replay">Watch the ceremony again</button></p>':'')+
+   '</div>';
+  var rp=document.getElementById("replay");
+  if(rp)rp.onclick=function(){document.getElementById("wash").classList.remove("on");deliberate(s)};
+}
+
+function codeEntry(){
+  stage.innerHTML=
+   '<p class="eyebrow">Sorting code</p><h1>Nine letters</h1>'+
+   '<p class="sub">If the Hat did its reading on another device, type the code here.</p>'+
+   '<input type="text" id="code" placeholder="ABC-DEF-GHI" autocomplete="off" spellcheck="false">'+
+   '<p class="err" id="err"></p>'+
+   '<div class="stack"><button class="seal-btn wide" id="use">Restore the sorting</button>'+
+   '<button class="seal-btn quiet wide" id="cancel">Back</button></div>';
+  var inp=document.getElementById("code"),err=document.getElementById("err");
+  inp.addEventListener("input",function(){err.textContent=""});
+  document.getElementById("cancel").onclick=route;
+  document.getElementById("use").onclick=function(){
+    var d=decode(inp.value);
+    if(!d){err.textContent="That code is not one of ours. Check it and try again.";return}
+    save({name:CONFIG.student,score:d.sc,picks:{G:0,H:0,R:0,S:0},house:d.h,done:false,unsealed:false,when:Date.now()});
+    route();
+  };
+  inp.focus();
+}
+
+document.getElementById("door").onclick=function(){
+  var s=load();
+  if(!s){stage.innerHTML='<p class="eyebrow">Keeper</p><h1>Nothing sealed</h1>'+
+    '<p class="sub">Nobody has been sorted on this device yet.</p>'+
+    '<div class="stack"><button class="seal-btn wide" id="k1">Start the ceremony</button>'+
+    '<button class="seal-btn quiet wide" id="k2">Enter a sorting code</button></div>';
+    document.getElementById("k1").onclick=welcome;
+    document.getElementById("k2").onclick=codeEntry;return}
+  stage.innerHTML='<p class="eyebrow">Keeper</p><h1>Say the word</h1>'+
+    '<input type="text" id="pw" placeholder="Passphrase" autocomplete="off">'+
+    '<p class="err" id="err"></p>'+
+    '<div class="stack"><button class="seal-btn wide" id="ok">Enter</button>'+
+    '<button class="seal-btn quiet wide" id="no">Back</button></div>';
+  var pw=document.getElementById("pw"),err=document.getElementById("err");
+  pw.addEventListener("input",function(){err.textContent=""});
+  pw.addEventListener("keydown",function(e){if(e.key==="Enter")go()});
+  document.getElementById("ok").onclick=go;
+  document.getElementById("no").onclick=route;
+  pw.focus();
+  function go(){
+    if(pw.value.trim().toLowerCase()!==CONFIG.keeperWord.toLowerCase()){err.textContent="Not the word.";return}
+    keeper(s);
+  }
+};
+function keeper(s){
+  var r=ranked(s.score,s.picks,s.house),total=s.score.G+s.score.H+s.score.R+s.score.S||1;
+  var h='<p class="eyebrow">Keeper &mdash; for your eyes</p><p class="warn">Do not leave this screen open.</p>'+
+        '<div class="panel"><p class="eyebrow" style="margin-bottom:6px">'+esc(s.name)+' was sorted into</p>'+
+        '<p style="font-family:var(--display);font-size:34px;line-height:1;margin:0 0 18px;color:'+HOUSES[r[0]].c+'">'+HOUSES[r[0]].name+'</p>';
+  for(var i=0;i<r.length;i++){var k=r[i],p=Math.round(s.score[k]/total*100);
+    h+='<div class="row"><div class="row-top"><span>'+HOUSES[k].name+'</span><span class="n">'+p+'%</span></div>'+
+       '<div class="track"><i style="width:'+p+'%;background:'+HOUSES[k].c+'"></i></div></div>'}
+  h+='<p class="eyebrow" style="margin:22px 0 0">Sorting code &mdash; write this down</p>'+
+     '<p class="code" id="sortcode">'+encode(r[0],s.score)+'</p>'+
+     '<p class="copied" id="copied"></p>'+
+     '<button class="ghost" id="copycode" style="display:block;width:100%;text-align:center">Copy the code</button>'+
+     '<p class="eyebrow" style="margin:8px 0 0">Restores the result on any other device</p></div>'+
+     '<div class="stack" style="margin-top:18px">'+
+     '<button class="seal-btn wide" id="prev">Preview the whole ceremony</button>'+
+     '<button class="seal-btn quiet wide" id="unseal">'+(s.unsealed?"Re-seal until the day":"Unseal it now")+'</button>'+
+     '<button class="seal-btn quiet wide" id="clear">Erase and start over</button>'+
+     '<button class="ghost" id="out" style="display:block;width:100%;text-align:center">Back to the sealed screen</button></div>';
+  stage.innerHTML=h;
+  document.getElementById("copycode").onclick=function(){
+    copyText(document.getElementById("sortcode").textContent,function(){
+      document.getElementById("copied").textContent="Copied — keep it somewhere she will not see.";
+    });
+  };
+  document.getElementById("prev").onclick=function(){PREVIEW=true;envelope(s)};
+  document.getElementById("unseal").onclick=function(){s.unsealed=!s.unsealed;save(s);keeper(s)};
+  document.getElementById("clear").onclick=function(){
+    if(confirm("Erase the sorting completely? This cannot be undone."))
+    {wipe();document.getElementById("wash").classList.remove("on");welcome()}};
+  document.getElementById("out").onclick=route;
+}
+
+route();
+</script>
+</body>
+</html>
