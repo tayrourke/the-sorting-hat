@@ -53,14 +53,12 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
     radial-gradient(60% 40% at 50% 100%,var(--house) 0%,transparent 55%);
   transition:opacity 1.6s ease}
 #wash.on{opacity:.22}
-.stage{position:relative;z-index:1;max-width:640px;margin:0 auto;padding:36px 22px 90px;min-height:100vh;display:flex;flex-direction:column;justify-content:center}
+.stage{position:relative;z-index:1;max-width:640px;margin:0 auto;padding:88px 22px 90px;min-height:100vh;display:flex;flex-direction:column;justify-content:center}
 
 .eyebrow{font-family:var(--util);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--dim);margin:0 0 14px}
 h1{font-family:var(--display);font-weight:400;font-size:clamp(36px,10.5vw,58px);line-height:1.02;margin:0 0 8px;color:var(--parch)}
-h1::after{content:"";display:block;width:72px;height:1px;margin:14px 0 0;
-  background:linear-gradient(90deg,var(--candle),transparent);
-  box-shadow:0 0 10px rgba(212,168,75,.45)}
-.env-wrap h1::after,.cert-wrap h1::after{margin-left:auto;margin-right:auto}
+.center{text-align:center}
+.center .flourish{justify-content:center}
 .sub{color:var(--dim);font-size:16px;margin:0 0 30px;font-style:italic;line-height:1.6}
 .q{font-weight:400;font-size:clamp(19px,4.9vw,24px);line-height:1.4;margin:0 0 24px}
 
@@ -152,11 +150,88 @@ input[type=text]::placeholder{color:#7A684C}
 .stack > *:last-child{margin-bottom:0}
 .copied{font-family:var(--util);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--candle);text-align:center;min-height:18px;margin:0 0 4px}
 
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.murmur{opacity:.92}#wash.on{opacity:.22}}
+#hall{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+#hall::before{content:"";position:absolute;left:0;right:0;top:0;height:210px;background:radial-gradient(ellipse 90% 100% at 50% 0%,rgba(212,168,75,.16),transparent 72%)}
+#stars i{position:absolute;border-radius:50%;background:#F3E6C8;box-shadow:0 0 6px rgba(212,168,75,.8);animation:twinkle 3.4s ease-in-out infinite}
+@keyframes twinkle{0%,100%{opacity:.15;transform:scale(.8)}50%{opacity:.95;transform:scale(1.15)}}
+#motes i{position:absolute;width:3px;height:3px;border-radius:50%;background:rgba(212,168,75,.75);box-shadow:0 0 8px rgba(212,168,75,.7);animation:mote 14s linear infinite}
+@keyframes mote{0%{transform:translateY(12vh) scale(.6);opacity:0}12%{opacity:.7}85%{opacity:.5}100%{transform:translateY(-110vh) scale(1);opacity:0}}
+.fcandle{position:absolute;width:22px;display:flex;flex-direction:column;align-items:center;animation:hover-c 6.5s ease-in-out infinite;transform-origin:top center}
+.fcandle .halo{position:absolute;top:-14px;width:54px;height:54px;border-radius:50%;background:radial-gradient(circle,rgba(232,184,75,.42),transparent 68%);pointer-events:none}
+.fcandle .flame{position:relative;z-index:1;width:11px;height:18px;border-radius:50% 50% 45% 45%/60% 60% 38% 38%;background:radial-gradient(circle at 40% 28%,#FFF8D2 0%,#F0C14B 48%,#E07A2F 100%);box-shadow:0 0 10px rgba(255,220,120,.95),0 0 22px rgba(232,184,75,.55);animation:flicker 1.5s ease-in-out infinite}
+.fcandle .wick{width:2px;height:5px;background:#3A2414;border-radius:1px;margin-bottom:-1px}
+.fcandle .stem{width:13px;height:var(--len,56px);background:linear-gradient(90deg,#8A7038,#F0E2C4 38%,#D4B896 62%,#9A7840);border-radius:2px 2px 1px 1px;box-shadow:2px 6px 14px rgba(0,0,0,.45);position:relative}
+.fcandle .stem::after{content:"";position:absolute;right:1px;top:38%;width:4px;height:11px;background:#E8D5A3;border-radius:0 0 3px 3px;opacity:.9}
+@keyframes hover-c{0%,100%{transform:translateY(0) rotate(-1.4deg)}50%{transform:translateY(-8px) rotate(1.6deg)}}
+#sparks{position:fixed;inset:0;z-index:4;pointer-events:none}
+#sparks i{position:absolute;width:5px;height:5px;margin:-2px 0 0 -2px;border-radius:50%;background:var(--candle);box-shadow:0 0 8px currentColor;animation:spark .9s ease-out forwards}
+@keyframes spark{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:translate(var(--dx),var(--dy)) scale(0);opacity:0}}
+.flourish{display:flex;align-items:center;gap:10px;margin:4px 0 22px;opacity:.75}
+.flourish i{display:block;height:1px;width:54px;background:linear-gradient(90deg,transparent,var(--candle),transparent);box-shadow:0 0 8px rgba(212,168,75,.35)}
+.flourish b{width:9px;height:9px;border:1px solid var(--candle);transform:rotate(45deg);box-shadow:0 0 8px rgba(212,168,75,.4)}
+.stage.arrive{animation:arrive .7s cubic-bezier(.16,.8,.3,1) both}
+@keyframes arrive{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+.seal-mark{width:86px;height:86px;border-radius:50%;margin:8px auto 22px;background:radial-gradient(circle at 35% 30%,#A8242C,var(--wax) 62%);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:34px;color:rgba(240,226,196,.92);box-shadow:inset 0 -3px 8px rgba(0,0,0,.35),0 0 0 3px rgba(201,162,39,.28),0 0 24px rgba(110,18,25,.45);animation:sealpulse 2.8s ease-in-out infinite}
+@keyframes sealpulse{0%,100%{box-shadow:inset 0 -3px 8px rgba(0,0,0,.35),0 0 0 3px rgba(201,162,39,.22),0 0 18px rgba(110,18,25,.35)}50%{box-shadow:inset 0 -3px 8px rgba(0,0,0,.35),0 0 0 5px rgba(201,162,39,.4),0 0 32px rgba(201,162,39,.35)}}
+
+.hat-think{text-align:center}
+.hat-glow{width:120px;height:120px;margin:0 auto 18px;border-radius:50%;background:radial-gradient(circle at 50% 40%,rgba(212,168,75,.35),transparent 68%);animation:hatglow 2.2s ease-in-out infinite;display:flex;align-items:flex-end;justify-content:center}
+.hat-glow svg{width:72px;height:72px;filter:drop-shadow(0 0 10px rgba(212,168,75,.55))}
+@keyframes hatglow{0%,100%{transform:scale(.96);opacity:.75}50%{transform:scale(1.06);opacity:1}}
+.runes{display:flex;justify-content:center;gap:14px;margin:0 0 22px;font-family:var(--display);font-size:15px;letter-spacing:.28em;color:var(--candle);opacity:.55}
+.runes span{animation:rune 2.4s ease-in-out infinite}
+.runes span:nth-child(2){animation-delay:.3s}
+.runes span:nth-child(3){animation-delay:.6s}
+.runes span:nth-child(4){animation-delay:.9s}
+@keyframes rune{0%,100%{opacity:.25;transform:translateY(0)}50%{opacity:.9;transform:translateY(-3px)}}
+.hat-think .murmur{text-align:left}
+
+.envelope{animation:floatenv 4.5s ease-in-out infinite}
+.envelope:hover,.envelope:focus-visible{box-shadow:0 18px 50px rgba(0,0,0,.6), inset 0 0 0 3px #EFE3C6, 0 0 28px rgba(201,162,39,.35)}
+@keyframes floatenv{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.envelope.open{animation:none}
+.wax{animation:sealpulse 2.8s ease-in-out infinite}
+
+.letter p{animation:ink .9s ease both}
+.letter p:nth-of-type(1){animation-delay:.05s}
+.letter p:nth-of-type(2){animation-delay:.16s}
+.letter p:nth-of-type(3){animation-delay:.28s}
+.letter p:nth-of-type(4){animation-delay:.4s}
+.letter p:nth-of-type(5){animation-delay:.52s}
+.letter p:nth-of-type(6){animation-delay:.64s}
+.letter p:nth-of-type(7){animation-delay:.76s}
+@keyframes ink{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+.house{animation:housename 1.4s cubic-bezier(.16,.8,.3,1) both}
+@keyframes housename{from{opacity:0;letter-spacing:.12em;filter:blur(4px)}to{opacity:1;letter-spacing:0;filter:none}}
+.cert .stamp{animation:stampin .7s cubic-bezier(.2,.8,.3,1) .3s both}
+@keyframes stampin{from{transform:scale(1.35) rotate(-12deg);opacity:0}to{transform:none;opacity:1}}
+
+.opt{overflow:hidden}
+.opt::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 40%,rgba(212,168,75,.08) 50%,transparent 60%);transform:translateX(-120%);pointer-events:none}
+.opt:hover::after,.opt:focus-visible::after{animation:sheen .7s ease}
+@keyframes sheen{to{transform:translateX(120%)}}
+
+body.mood-hat{--ink:#160A08}
+body.mood-reveal #hall .fcandle .flame{box-shadow:0 0 16px var(--house),0 0 36px var(--house)}
+
+@media (max-width:720px){.fcandle{transform:scale(.72)}}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  .murmur{opacity:.92}#wash.on{opacity:.22}
+  .letter p,.stage.arrive,.house,.cert .stamp{opacity:1;transform:none;filter:none}
+}
 </style>
 </head>
 <body>
+<div id="hall" aria-hidden="true">
+  <div id="stars"></div>
+  <div id="float-candles"></div>
+  <div id="motes"></div>
+</div>
 <div id="wash"></div>
+<div id="sparks" aria-hidden="true"></div>
 <main class="stage" id="stage" aria-live="polite"></main>
 <button class="door" id="door" aria-label="Keeper"></button>
 
@@ -420,6 +495,97 @@ function copyText(t,done){
   }
 }
 
+var hush=window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+var audioCtx=null;
+function flourish(){return '<div class="flourish" aria-hidden="true"><i></i><b></b><i></i></div>'}
+function hatSvg(){
+  return '<svg viewBox="0 0 90 78" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">'+
+    '<ellipse cx="45" cy="68" rx="34" ry="7" fill="#2A1810"/>'+
+    '<path d="M18 66c6-8 14-12 27-12s21 4 27 12c-4 5-16 8-27 8S22 71 18 66z" fill="#4A2E18"/>'+
+    '<path d="M32 56c2-20 7-36 13-44 4-4 11-3 13 2 5 10 9 26 11 42" fill="#5A3A20"/>'+
+    '<path d="M42 16c3-8 11-13 16-9 0 7-4 13-9 16" fill="#3A2414"/>'+
+    '<path d="M44 30c7 3 11 10 10 16" fill="none" stroke="#C9A227" stroke-width="1.4" opacity=".75"/>'+
+    '<circle cx="48" cy="38" r="1.4" fill="#C9A227" opacity=".8"/>'+
+    '</svg>';
+}
+function paint(html){
+  document.body.classList.remove("mood-hat","mood-reveal");
+  stage.classList.remove("arrive");
+  stage.innerHTML=html;
+  if(!hush){void stage.offsetWidth;stage.classList.add("arrive")}
+}
+function enchantHall(){
+  var stars=document.getElementById("stars"),cands=document.getElementById("float-candles"),motes=document.getElementById("motes");
+  if(!stars||stars.childNodes.length)return;
+  var i,s,n=hush?12:56;
+  for(i=0;i<n;i++){
+    s=document.createElement("i");
+    s.style.left=(Math.random()*100)+"%";
+    s.style.top=(Math.random()*100)+"%";
+    s.style.width=s.style.height=(1+Math.random()*2)+"px";
+    s.style.animationDelay=(Math.random()*3.4)+"s";
+    s.style.animationDuration=(2.4+Math.random()*2.4)+"s";
+    stars.appendChild(s);
+  }
+  if(hush)return;
+  var n=window.innerWidth<720?7:12;
+  for(i=0;i<n;i++){
+    var c=document.createElement("div");
+    c.className="fcandle";
+    c.style.left=(4+(i+0.4)*(92/n))+"%";
+    c.style.top=(1+(i%4)*2.2)+"%";
+    c.style.setProperty("--len",(42+(i%5)*14)+"px");
+    c.style.animationDelay=(i*0.37)+"s";
+    c.innerHTML='<span class="halo"></span><span class="flame"></span><span class="wick"></span><span class="stem"></span>';
+    c.querySelector(".flame").style.animationDelay=(i*0.18)+"s";
+    cands.appendChild(c);
+  }
+  for(i=0;i<22;i++){
+    s=document.createElement("i");
+    s.style.left=(Math.random()*100)+"%";
+    s.style.animationDelay=(Math.random()*14)+"s";
+    s.style.animationDuration=(11+Math.random()*8)+"s";
+    motes.appendChild(s);
+  }
+}
+function burst(x,y,color,n){
+  if(hush)return;
+  var box=document.getElementById("sparks");
+  n=n||16;
+  for(var i=0;i<n;i++){
+    var s=document.createElement("i"),a=Math.random()*Math.PI*2,d=18+Math.random()*78;
+    s.style.left=x+"px";s.style.top=y+"px";
+    s.style.setProperty("--dx",Math.cos(a)*d+"px");
+    s.style.setProperty("--dy",Math.sin(a)*d+"px");
+    s.style.background=color||"#D4A84B";
+    s.style.boxShadow="0 0 8px "+(color||"#D4A84B");
+    box.appendChild(s);
+    setTimeout(function(el){if(el&&el.parentNode)el.parentNode.removeChild(el)},1000,s);
+  }
+}
+function burstCenter(color,n){
+  burst(window.innerWidth/2,window.innerHeight*0.38,color,n||28);
+}
+function tone(freq,dur,type,gain){
+  try{
+    audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();
+    if(audioCtx.state==="suspended")audioCtx.resume();
+    var o=audioCtx.createOscillator(),g=audioCtx.createGain();
+    o.type=type||"sine";o.frequency.value=freq;
+    g.gain.setValueAtTime(gain||.03,audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+dur);
+    o.connect(g);g.connect(audioCtx.destination);
+    o.start();o.stop(audioCtx.currentTime+dur);
+  }catch(e){}
+}
+function chime(kind){
+  if(hush)return;
+  if(kind==="tap"){tone(392,.1,"sine",.025);tone(523,.16,"sine",.018)}
+  else if(kind==="seal"){tone(196,.28,"triangle",.035);tone(294,.4,"sine",.022)}
+  else if(kind==="letter"){tone(349,.35,"sine",.028);tone(440,.45,"triangle",.016)}
+  else if(kind==="reveal"){tone(261,.22,"sine",.03);setTimeout(function(){tone(329,.28,"sine",.024)},90);setTimeout(function(){tone(392,.45,"sine",.02)},180)}
+}
+
 function buildDeck(){
   deck=[];
   for(var i=0;i<QUESTIONS.length;i++){
@@ -439,14 +605,14 @@ function route(){
 }
 
 function welcome(){
-  stage.innerHTML=
+  paint(
    '<p class="eyebrow">A very old hat, in four movements</p>'+
-   '<h1>The Sorting</h1>'+
+   '<h1>The Sorting</h1>'+flourish()+
    '<p class="sub">Twenty-seven questions, and about eight minutes. Answer honestly rather than cleverly &mdash; the Hat has been doing this for a thousand years and can tell the difference. It will not say one word about what it finds. Not today.</p>'+
    '<label class="eyebrow" for="who" style="display:block">Who is being sorted?</label>'+
    '<input type="text" id="who" value="'+esc(CONFIG.student)+'" autocomplete="off" spellcheck="false">'+
    '<p class="err" id="err"></p>'+
-   '<button class="seal-btn wide" id="go">Put on the Hat</button>';
+   '<button class="seal-btn wide" id="go">Put on the Hat</button>');
   var input=document.getElementById("who"),err=document.getElementById("err");
   input.addEventListener("input",function(){err.textContent=""});
   input.addEventListener("keydown",function(e){if(e.key==="Enter")go()});
@@ -455,18 +621,19 @@ function welcome(){
     var v=input.value.trim();
     if(!v){err.textContent="The Hat needs a name before it can begin.";input.focus();return}
     name_=v;idx=0;score={G:0,H:0,R:0,S:0};picks={G:0,H:0,R:0,S:0};trail=[];buildDeck();
+    chime("tap");burstCenter("#D4A84B",18);
     interstitial(0);
   }
 }
 
 function interstitial(m){
   var mv=MOVEMENTS[m];
-  stage.innerHTML=
+  paint(
    '<p class="eyebrow">'+mv.n+'</p>'+
-   '<h1>'+mv.t+'</h1>'+
+   '<h1>'+mv.t+'</h1>'+flourish()+
    '<p class="sub" style="margin-bottom:34px">'+mv.intro+'</p>'+
-   '<button class="seal-btn wide" id="on">'+mv.cta+'</button>';
-  document.getElementById("on").onclick=question;
+   '<button class="seal-btn wide" id="on">'+mv.cta+'</button>');
+  document.getElementById("on").onclick=function(){chime("tap");question()};
 }
 
 function candles(){
@@ -489,7 +656,7 @@ function question(){
   h+='<p class="q">'+esc(it.q)+'</p>';
   for(var i=0;i<opts.length;i++){h+='<button class="opt" data-i="'+i+'">'+esc(opts[i][0])+'</button>'}
   if(idx>0)h+='<button class="ghost" id="back">&larr; Back</button>';
-  stage.innerHTML=h;
+  paint(h);
   var os=stage.querySelectorAll(".opt");
   for(var j=0;j<os.length;j++){os[j].onclick=function(){choose(parseInt(this.getAttribute("data-i"),10))}}
   var b=document.getElementById("back");
@@ -503,7 +670,14 @@ function question(){
 
 function choose(i){
   var it=QUESTIONS[idx],w=MOVEMENTS[it.m].w,s=deck[idx][i][1],top=null,best=0;
-  for(var k in s){score[k]+=s[k]*w;if(s[k]>best){best=s[k];top=k}}
+  for(var k in s){if(s[k]>best){best=s[k];top=k}}
+  var btn=stage.querySelector('.opt[data-i="'+i+'"]');
+  if(btn){
+    var box=btn.getBoundingClientRect();
+    burst(box.left+box.width*0.12,box.top+box.height/2,(top&&HOUSES[top].c)||"#D4A84B",14);
+  }
+  chime("tap");
+  for(var k in s){score[k]+=s[k]*w}
   if(top)picks[top]++;
   trail.push({s:s,top:top,w:w});
   idx++;
@@ -516,39 +690,45 @@ function sealIt(){
   var r=ranked(score,picks);
   save({name:name_,score:score,picks:picks,house:r[0],done:false,unsealed:false,when:Date.now()});
   var d=daysLeft();
-  stage.innerHTML=
-   '<p class="eyebrow">Sealed</p><h1>Not a word</h1>'+
+  chime("seal");burstCenter("#C9A227",26);
+  paint(
+   '<div class="center"><p class="eyebrow">Sealed</p><h1>Not a word</h1>'+flourish()+
+   '<div class="seal-mark" aria-hidden="true">H</div>'+
    '<p class="sub">The Hat has read all twenty-seven answers and made up its mind. It is now refusing to speak, which it does with enormous satisfaction.</p>'+
    '<p style="font-size:18px;line-height:1.6;margin:0 0 26px">Come back on <strong style="color:var(--candle);font-weight:400">'+
      revealDay().toLocaleDateString(undefined,{day:"numeric",month:"long"})+'</strong>'+
      (d>0?', in '+d+' day'+(d===1?"":"s")+',':'')+' and it will tell you where you belong.</p>'+
-   '<p class="eyebrow" style="margin:0">Close this page. Nothing more happens today.</p>';
+   '<p class="eyebrow" style="margin:0">Close this page. Nothing more happens today.</p></div>');
 }
 function holding(s){
   var d=daysLeft();
-  stage.innerHTML=
-   '<p class="eyebrow">Sealed</p><h1>Still waiting</h1>'+
+  paint(
+   '<div class="center"><p class="eyebrow">Sealed</p><h1>Still waiting</h1>'+flourish()+
+   '<div class="seal-mark" aria-hidden="true">H</div>'+
    '<p class="sub">The Hat has your answers, '+esc(s.name)+', and it is not budging.</p>'+
    '<p style="font-size:20px;margin:0 0 30px"><strong style="color:var(--candle);font-weight:400">'+d+' day'+(d===1?"":"s")+'</strong> until it speaks.</p>'+
-   '<button class="ghost" id="codebtn">I have a sorting code</button>';
+   '<button class="ghost" id="codebtn">I have a sorting code</button></div>');
   document.getElementById("codebtn").onclick=codeEntry;
 }
 
 function envelope(s){
   document.getElementById("wash").classList.remove("on");
-  stage.innerHTML=
-   '<div class="env-wrap"><p class="eyebrow">Something arrived for you</p>'+
+  paint(
+   '<div class="env-wrap"><p class="eyebrow">Something arrived for you</p>'+flourish()+
    '<button class="envelope" id="env" aria-label="Break the seal and open the letter">'+
    '<span class="flap"></span><span class="wax">H</span>'+
    '<span class="addr">'+esc(s.name)+'<br>'+esc(CONFIG.address)+'</span></button>'+
-   '<p class="eyebrow" style="margin:0">Tap the seal</p></div>';
+   '<p class="eyebrow" style="margin:0">Tap the seal</p></div>');
   document.getElementById("env").onclick=function(){
     this.classList.add("open");this.disabled=true;
+    chime("letter");
+    var r=this.getBoundingClientRect();
+    burst(r.left+r.width/2,r.top+r.height/2,"#C11F2A",22);
     setTimeout(function(){letter(s)},1000);
   };
 }
 function letter(s){
-  stage.innerHTML=
+  paint(
    '<div class="letter parchment"><h2>Hogwarts School</h2>'+
    '<p class="crest">of Witchcraft and Wizardry</p><div class="rule"></div>'+
    '<p>Dear Miss '+esc(s.name)+',</p>'+
@@ -558,19 +738,27 @@ function letter(s){
    '<p>One matter remains before anything else can be settled. The Hat has already read your answers &mdash; all twenty-seven of them &mdash; and has been holding its tongue since August, which it does not enjoy and has mentioned to us more than once. It would like a word.</p>'+
    '<p class="sig">'+esc(CONFIG.signedBy)+'</p>'+
    '<p class="sigrole">Deputy Headmistress</p></div>'+
-   '<p style="margin-top:26px;text-align:center"><button class="seal-btn" id="toHat">Present yourself to the Hat</button></p>';
-  document.getElementById("toHat").onclick=function(){deliberate(s)};
+   '<p style="margin-top:26px;text-align:center"><button class="seal-btn" id="toHat">Present yourself to the Hat</button></p>');
+  chime("letter");
+  document.getElementById("toHat").onclick=function(){chime("tap");deliberate(s)};
 }
 
 function deliberate(s){
   var r=ranked(s.score,s.picks,s.house);
   var lines=["Hmm. "+s.name+". Let me have a proper look at you.",
              HOUSES[r[0]].loud,HOUSES[r[1]].quiet,"Yes. I think that settles it."];
-  var h='<p class="eyebrow">The Hat is thinking</p>';
+  var h='<div class="hat-think"><p class="eyebrow">The Hat is thinking</p>'+
+        '<div class="hat-glow">'+hatSvg()+'</div>'+
+        '<div class="runes" aria-hidden="true"><span>&#10022;</span><span>&#10023;</span><span>&#10022;</span><span>&#10023;</span></div>';
   for(var i=0;i<lines.length;i++){h+='<p class="murmur" id="m'+i+'">'+esc(lines[i])+'</p>'}
-  stage.innerHTML=h;
+  h+='</div>';
+  paint(h);
+  document.body.classList.add("mood-hat");
+  chime("seal");
   lines.forEach(function(_,i){setTimeout(function(){
-    var el=document.getElementById("m"+i);if(el)el.classList.add("show")},300+i*1600)});
+    var el=document.getElementById("m"+i);if(el)el.classList.add("show");
+    if(el)burst(window.innerWidth/2,el.getBoundingClientRect().top, "#D4A84B",8);
+  },300+i*1600)});
   setTimeout(function(){reveal(s)},300+lines.length*1600+800);
 }
 function reveal(s){
@@ -578,7 +766,7 @@ function reveal(s){
   var total=s.score.G+s.score.H+s.score.R+s.score.S||1;
   document.documentElement.style.setProperty("--house",win.c);
   document.getElementById("wash").classList.add("on");
-  var h='<div class="reveal"><p class="eyebrow">'+esc(s.name)+', the Hat has decided</p>'+
+  var h='<div class="reveal"><p class="eyebrow">'+esc(s.name)+', the Hat has decided</p>'+flourish()+
         '<p class="house">'+win.name+'</p><p class="house-line">'+win.line+'</p>'+
         '<div class="tally"><p class="eyebrow">How close it was</p>';
   for(var i=0;i<r.length;i++){var k=r[i],p=Math.round(s.score[k]/total*100);
@@ -590,7 +778,10 @@ function reveal(s){
     ' came within a whisker of each other, and the Hat had to weigh your own leanings to break the tie.</p>'}
   else if(gap>=20){h+='<p class="note">No hesitation at all. The Hat knew by the second movement and spent the rest of it enjoying itself.</p>'}
   h+='<p style="margin-top:30px"><button class="seal-btn wide" id="toCert">Receive your certificate</button></p></div>';
-  stage.innerHTML=h;
+  paint(h);
+  document.body.classList.add("mood-reveal");
+  chime("reveal");
+  burstCenter(win.c,36);
   setTimeout(function(){var b=stage.querySelectorAll(".track i");
     for(var i=0;i<b.length;i++){b[i].style.width=b[i].getAttribute("data-w")+"%"}},120);
   document.getElementById("toCert").onclick=function(){
@@ -601,7 +792,7 @@ function certificate(s,returning){
   var r=ranked(s.score,s.picks,s.house),win=HOUSES[r[0]];
   document.documentElement.style.setProperty("--house",win.c);
   document.getElementById("wash").classList.add("on");
-  stage.innerHTML=
+  paint(
    '<div class="reveal"><div class="cert parchment">'+
    '<p class="k">Hogwarts School of Witchcraft and Wizardry</p>'+
    '<p class="who">'+esc(s.name)+'</p><p class="mid">has been sorted into</p>'+
@@ -610,19 +801,21 @@ function certificate(s,returning){
    '<p class="date">Sorted '+esc(s.day||longDate())+'</p></div>'+
    '<p class="eyebrow" style="text-align:center;margin:20px 0 0">Screenshot this &mdash; it is the only copy</p>'+
    (returning?'<p style="text-align:center;margin-top:18px"><button class="ghost" id="replay">Watch the ceremony again</button></p>':'')+
-   '</div>';
+   '</div>');
+  document.body.classList.add("mood-reveal");
+  burstCenter(win.c,20);
   var rp=document.getElementById("replay");
   if(rp)rp.onclick=function(){document.getElementById("wash").classList.remove("on");deliberate(s)};
 }
 
 function codeEntry(){
-  stage.innerHTML=
-   '<p class="eyebrow">Sorting code</p><h1>Nine letters</h1>'+
+  paint(
+   '<p class="eyebrow">Sorting code</p><h1>Nine letters</h1>'+flourish()+
    '<p class="sub">If the Hat did its reading on another device, type the code here.</p>'+
    '<input type="text" id="code" placeholder="ABC-DEF-GHI" autocomplete="off" spellcheck="false">'+
    '<p class="err" id="err"></p>'+
    '<div class="stack"><button class="seal-btn wide" id="use">Restore the sorting</button>'+
-   '<button class="seal-btn quiet wide" id="cancel">Back</button></div>';
+   '<button class="seal-btn quiet wide" id="cancel">Back</button></div>');
   var inp=document.getElementById("code"),err=document.getElementById("err");
   inp.addEventListener("input",function(){err.textContent=""});
   document.getElementById("cancel").onclick=route;
@@ -637,17 +830,17 @@ function codeEntry(){
 
 document.getElementById("door").onclick=function(){
   var s=load();
-  if(!s){stage.innerHTML='<p class="eyebrow">Keeper</p><h1>Nothing sealed</h1>'+
+  if(!s){paint('<p class="eyebrow">Keeper</p><h1>Nothing sealed</h1>'+flourish()+
     '<p class="sub">Nobody has been sorted on this device yet.</p>'+
     '<div class="stack"><button class="seal-btn wide" id="k1">Start the ceremony</button>'+
-    '<button class="seal-btn quiet wide" id="k2">Enter a sorting code</button></div>';
+    '<button class="seal-btn quiet wide" id="k2">Enter a sorting code</button></div>');
     document.getElementById("k1").onclick=welcome;
     document.getElementById("k2").onclick=codeEntry;return}
-  stage.innerHTML='<p class="eyebrow">Keeper</p><h1>Say the word</h1>'+
+  paint('<p class="eyebrow">Keeper</p><h1>Say the word</h1>'+flourish()+
     '<input type="text" id="pw" placeholder="Passphrase" autocomplete="off">'+
     '<p class="err" id="err"></p>'+
     '<div class="stack"><button class="seal-btn wide" id="ok">Enter</button>'+
-    '<button class="seal-btn quiet wide" id="no">Back</button></div>';
+    '<button class="seal-btn quiet wide" id="no">Back</button></div>');
   var pw=document.getElementById("pw"),err=document.getElementById("err");
   pw.addEventListener("input",function(){err.textContent=""});
   pw.addEventListener("keydown",function(e){if(e.key==="Enter")go()});
@@ -677,7 +870,7 @@ function keeper(s){
      '<button class="seal-btn quiet wide" id="unseal">'+(s.unsealed?"Re-seal until the day":"Unseal it now")+'</button>'+
      '<button class="seal-btn quiet wide" id="clear">Erase and start over</button>'+
      '<button class="ghost" id="out" style="display:block;width:100%;text-align:center">Back to the sealed screen</button></div>';
-  stage.innerHTML=h;
+  paint(h);
   document.getElementById("copycode").onclick=function(){
     copyText(document.getElementById("sortcode").textContent,function(){
       document.getElementById("copied").textContent="Copied — keep it somewhere she will not see.";
@@ -691,6 +884,7 @@ function keeper(s){
   document.getElementById("out").onclick=route;
 }
 
+enchantHall();
 route();
 </script>
 </body>
