@@ -73,8 +73,7 @@ h1{font-family:var(--display);font-weight:400;font-size:clamp(38px,10.5vw,60px);
   gap:4px 13px;min-height:26px;margin:0 0 30px}
 .grp{display:flex;gap:4px;align-items:flex-end}
 .candle{position:relative;width:3px;height:7px;border-radius:1px 1px 0 0;opacity:.5;
-  background:linear-gradient(90deg,#3E2C1A,#7C673E 45%,#33230F);
-  transition:height .4s ease,opacity .4s ease}
+  background:linear-gradient(90deg,#3E2C1A,#7C673E 45%,#33230F)}
 .candle.lit{height:9px;opacity:1;background:linear-gradient(90deg,#6A5330,#EADAAF 45%,#6A5330)}
 .candle.lit::after{content:"";position:absolute;left:50%;top:-5px;margin-left:-2px;width:4px;height:6px;
   border-radius:50% 50% 45% 45%/72% 72% 28% 28%;
@@ -203,23 +202,25 @@ input[type=text]::placeholder{color:#7A684C;font-style:italic}
   background:linear-gradient(180deg,rgba(255,255,255,.42),transparent 24%),
     linear-gradient(180deg,transparent 82%,rgba(120,92,44,.14))}
 .envelope.open .flap{transform:rotateX(168deg)}
-.wax{position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);z-index:4;
+.wax{position:absolute;left:50%;top:47%;transform:translate(-50%,-50%);z-index:4;
   width:70px;height:70px;display:flex;align-items:center;justify-content:center;
   border-radius:48% 52% 45% 55%/54% 46% 56% 44%;
-  background:radial-gradient(circle at 34% 26%,#BE3A41 0%,#8E1C24 36%,#6C1017 68%,#4A080D 100%);
-  box-shadow:inset 0 -5px 12px rgba(0,0,0,.48),inset 0 3px 9px rgba(255,150,150,.18),
-    0 4px 12px rgba(0,0,0,.5),0 0 24px rgba(150,34,43,.34);
+  background:
+    radial-gradient(circle at 33% 24%,rgba(255,196,190,.16),transparent 40%),
+    radial-gradient(circle at 42% 34%,#9C2730 0%,#7E141C 44%,#5E0D14 74%,#3E070B 100%);
+  box-shadow:inset 0 -5px 12px rgba(0,0,0,.5),inset 0 2px 8px rgba(255,150,150,.1),
+    0 4px 12px rgba(0,0,0,.5),0 0 24px rgba(150,34,43,.3);
   transition:transform .6s ease,opacity .6s ease}
-.wax::before{content:"";position:absolute;left:-7%;bottom:-13%;width:34%;height:38%;z-index:-1;
-  border-radius:52% 48% 62% 38%;
-  background:radial-gradient(circle at 40% 26%,#9E262E,#560B10)}
+.wax::before{content:"";position:absolute;left:-3%;bottom:-10%;width:30%;height:34%;z-index:-1;
+  transform:rotate(-12deg);border-radius:56% 44% 64% 36%;
+  background:radial-gradient(circle at 40% 26%,#8A1C24,#4A090E)}
 .wax::after{content:"";position:absolute;inset:9%;border-radius:inherit;
   border:1px dashed rgba(244,220,186,.2)}
 .wax b{position:relative;font-family:var(--display);font-weight:400;font-size:30px;
   color:rgba(248,232,204,.88);
   text-shadow:0 1px 0 rgba(0,0,0,.55),0 -1px 0 rgba(255,186,186,.18)}
 .envelope.open .wax{transform:translate(-50%,-50%) scale(1.45) rotate(-16deg);opacity:0}
-.addr{position:absolute;left:0;right:0;bottom:7%;z-index:1;padding:0 16px;
+.addr{position:absolute;left:0;right:0;bottom:6%;z-index:1;padding:0 16px;
   font-family:var(--letterface);font-style:italic;font-size:15.5px;line-height:1.42;
   color:#37291A;text-shadow:0 1px 0 rgba(255,255,255,.35)}
 .addr::after{content:"";display:block;width:78px;height:1px;margin:6px auto 0;
@@ -300,7 +301,7 @@ input[type=text]::placeholder{color:#7A684C;font-style:italic}
 .cert .date{font-family:var(--util);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#7A6A4C}
 
 .door{position:fixed;right:12px;bottom:12px;width:17px;height:17px;border-radius:50%;border:none;cursor:pointer;z-index:6;
-  background:radial-gradient(circle at 40% 34%,rgba(232,197,106,.28),rgba(201,162,39,.06) 70%);
+  background:radial-gradient(circle at 40% 34%,rgba(232,197,106,.17),rgba(201,162,39,.04) 70%);
   transition:background .3s ease,box-shadow .3s ease}
 .door:hover,.door:focus-visible{outline:none;
   background:radial-gradient(circle at 40% 34%,#FFE9AE,rgba(212,168,75,.6) 70%);
@@ -317,7 +318,8 @@ input[type=text]::placeholder{color:#7A684C;font-style:italic}
 .copied{font-family:var(--util);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--candle);text-align:center;min-height:18px;margin:0 0 4px}
 
 /* ── the hall: ceiling, stars, tapers, dust ── */
-#hall{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+#hall{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;opacity:0;transition:opacity 1.6s ease}
+#hall.lit{opacity:1}
 #hall::before{content:"";position:absolute;left:0;right:0;top:0;height:40vh;
   background:radial-gradient(ellipse 88% 100% at 50% -8%,rgba(226,170,74,.15),transparent 70%)}
 #ceiling{position:absolute;left:-2%;right:-2%;top:0;height:min(46vh,430px);opacity:.55}
@@ -329,7 +331,7 @@ input[type=text]::placeholder{color:#7A684C;font-style:italic}
   width:15px;height:1px;margin:-.5px 0 0 -7.5px;
   background:linear-gradient(90deg,transparent,rgba(255,242,208,.55),transparent)}
 #stars i.g::after{transform:rotate(90deg)}
-@keyframes twinkle{0%,100%{opacity:.12;transform:scale(.72)}50%{opacity:.95;transform:scale(1.14)}}
+@keyframes twinkle{0%,100%{opacity:.42;transform:scale(.92)}50%{opacity:.88;transform:scale(1.06)}}
 .shoot{position:absolute;width:2px;height:2px;border-radius:50%;background:#FFF8E6;opacity:0;
   box-shadow:0 0 8px rgba(255,242,208,.9);animation:shoot 2.3s ease-in forwards}
 .shoot::after{content:"";position:absolute;right:1px;top:0;width:96px;height:1px;
@@ -373,14 +375,14 @@ input[type=text]::placeholder{color:#7A684C;font-style:italic}
   border-radius:0 0 60% 60%/0 0 100% 100%;
   background:linear-gradient(90deg,#7A6134,#EFE0BA 55%,#AF9159)}
 @keyframes sway{
-  0%,100%{transform:translateY(0) rotate(-1.1deg) scale(var(--s,1))}
-  50%{transform:translateY(-9px) rotate(1.3deg) scale(var(--s,1))}}
+  0%,100%{transform:translateY(0) rotate(-.55deg) scale(var(--s,1))}
+  50%{transform:translateY(-4px) rotate(.65deg) scale(var(--s,1))}}
 @keyframes flame{
   0%,100%{transform:scale(1);opacity:1}
   21%{transform:scale(1.05,.9) skewX(-3deg);opacity:.93}
   46%{transform:scale(.95,1.13) skewX(2deg);opacity:1}
   72%{transform:scale(1.02,.97) skewX(-1deg);opacity:.96}}
-@keyframes breathe{0%,100%{opacity:.7;transform:scale(.94)}50%{opacity:1;transform:scale(1.08)}}
+@keyframes breathe{0%,100%{opacity:.82;transform:scale(.98)}50%{opacity:1;transform:scale(1.03)}}
 
 #motes i{position:absolute;bottom:-8vh;border-radius:50%;
   background:radial-gradient(circle,rgba(255,234,176,.95) 0%,rgba(214,166,72,.45) 55%,transparent 72%);
@@ -413,19 +415,29 @@ input[type=text]::placeholder{color:#7A684C;font-style:italic}
 .flourish b{width:6px;height:6px;border:1px solid var(--gold-lit);transform:rotate(45deg);
   box-shadow:0 0 8px rgba(232,197,106,.45)}
 .flourish s{width:3px;height:3px;border-radius:50%;background:var(--gold);text-decoration:none;opacity:.85}
-.stage.arrive{animation:arrive .75s cubic-bezier(.16,.8,.3,1) both}
-@keyframes arrive{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.stage.arrive{animation:arrive .7s cubic-bezier(.16,.8,.3,1) both}
+@keyframes arrive{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.hello .bday{font-family:var(--letterface);font-style:italic;font-size:clamp(18px,4.4vw,22px);
+  color:var(--gold-lit);margin:0 0 6px;letter-spacing:.02em}
+.hello .lead{font-size:clamp(18px,4.6vw,21px);line-height:1.5;margin:0 0 16px;color:var(--parch);
+  text-shadow:0 1px 16px rgba(0,0,0,.55)}
+.hello .warm{color:var(--gold-lit);font-size:17px;margin:0 0 28px}
+.hello .who-label{margin-top:8px}
 
 /* the seal on the sealed screens: wax, with a drip */
 .seal-mark{position:relative;width:92px;height:92px;margin:10px auto 26px;
   display:flex;align-items:center;justify-content:center;
   border-radius:48% 52% 45% 55%/54% 46% 56% 44%;
-  background:radial-gradient(circle at 34% 26%,#BE3A41 0%,#8E1C24 36%,#6C1017 68%,#4A080D 100%);
+  background:
+    radial-gradient(circle at 33% 24%,rgba(255,196,190,.16),transparent 40%),
+    radial-gradient(circle at 42% 34%,#9C2730 0%,#7E141C 44%,#5E0D14 74%,#3E070B 100%);
   font-family:var(--display);font-size:36px;color:rgba(248,232,204,.88);
-  text-shadow:0 1px 0 rgba(0,0,0,.55),0 -1px 0 rgba(255,186,186,.16);
+  text-shadow:0 1px 0 rgba(0,0,0,.55),0 -1px 0 rgba(255,186,186,.14);
   animation:sealpulse 3.4s ease-in-out infinite}
-.seal-mark::before{content:"";position:absolute;left:-6%;bottom:-12%;width:32%;height:36%;z-index:-1;
-  border-radius:52% 48% 62% 38%;background:radial-gradient(circle at 40% 26%,#9E262E,#560B10)}
+.seal-mark::before{content:"";position:absolute;left:-2%;bottom:-9%;width:30%;height:34%;z-index:-1;
+  transform:rotate(-12deg);border-radius:56% 44% 64% 36%;
+  background:radial-gradient(circle at 40% 26%,#8A1C24,#4A090E)}
 .seal-mark::after{content:"";position:absolute;inset:9%;border-radius:inherit;
   border:1px dashed rgba(244,220,186,.2)}
 @keyframes sealpulse{
@@ -495,6 +507,12 @@ body.mood-reveal .taper .flame{
   box-shadow:0 0 12px var(--house-lit),0 0 30px var(--house),0 0 60px var(--house)}
 body.mood-reveal .taper .halo{
   background:radial-gradient(circle,color-mix(in srgb,var(--house) 40%,transparent) 0%,transparent 68%)}
+body.mood-hello{
+  background:
+    radial-gradient(ellipse 130% 62% at 50% -16%,rgba(160,42,40,.42),transparent 64%),
+    radial-gradient(ellipse 80% 34% at 50% -4%,rgba(232,176,78,.26),transparent 72%),
+    radial-gradient(ellipse 96% 44% at 50% 114%,rgba(140,78,24,.24),transparent 66%),
+    linear-gradient(180deg,#1A0B08 0%,#0E0604 46%,#070303 100%)}
 
 @media (max-width:720px){
   body{font-size:16.5px}
@@ -519,6 +537,7 @@ body.mood-reveal .taper .halo{
   .house{filter:drop-shadow(0 2px 0 rgba(0,0,0,.45))}
   #stars i{opacity:.6}
   .taper .halo{opacity:.85}
+  #hall{opacity:1}
 }
 </style>
 </head>
@@ -850,11 +869,11 @@ function hatSvg(){
   '<path d="M66 148C84 164 120 162 138 146" fill="none" stroke="#C08A4E" stroke-width="1.4" opacity=".2"/>'+
   '</svg>';
 }
-function paint(html){
-  document.body.classList.remove("mood-hat","mood-reveal");
+function paint(html,soft){
+  document.body.classList.remove("mood-hat","mood-reveal","mood-hello");
   stage.classList.remove("arrive");
   stage.innerHTML=html;
-  if(!hush){void stage.offsetWidth;stage.classList.add("arrive")}
+  if(!hush && !soft){void stage.offsetWidth;stage.classList.add("arrive")}
 }
 /* the vault overhead: pointed arches, drawn faintly, so the stars read as a ceiling */
 function vaultSvg(){
@@ -893,12 +912,13 @@ function enchantHall(){
     s.style.top=(Math.pow(Math.random(),1.5)*96)+"%";
     s.style.width=s.style.height=sz.toFixed(2)+"px";
     s.style.setProperty("--t",(2.6+Math.random()*3.4).toFixed(2)+"s");
-    s.style.animationDelay=(Math.random()*4).toFixed(2)+"s";
+    s.style.animationDelay=(-Math.random()*5).toFixed(2)+"s";
     stars.appendChild(s);
   }
-  if(hush)return;
-  /* tapers: on narrow screens they keep to the margins, clear of the words */
+  /* tapers: on narrow screens they keep to the margins, clear of the words.
+     they are still drawn when motion is reduced — they simply hold still. */
   var xs=mob?[4,13,23,77,87,96]:[3,10,18,27,37,48,59,69,78,86,94];
+  if(hush)xs=mob?[5,16,84,95]:[4,14,26,74,86,96];
   for(i=0;i<xs.length;i++){
     var c=document.createElement("div"),far=(i%3===1);
     c.className="taper";
@@ -909,13 +929,15 @@ function enchantHall(){
     c.style.setProperty("--k",far?.72:(i%4===2?.86:1));
     c.style.setProperty("--sw",(6.4+(i%5)*.9).toFixed(1)+"s");
     if(far)c.style.opacity=".62";
-    c.style.animationDelay=(i*.41).toFixed(2)+"s";
+    c.style.animationDelay=(-2.1-i*1.37).toFixed(2)+"s";
     c.innerHTML='<span class="halo"></span><span class="flame"></span><span class="wick"></span>'+
                 '<span class="collar"></span><span class="body"></span><span class="foot"></span>';
-    c.querySelector(".flame").style.animationDelay=(i*.19).toFixed(2)+"s";
-    c.querySelector(".halo").style.animationDelay=(i*.53).toFixed(2)+"s";
+    c.querySelector(".flame").style.animationDelay=(-i*.47).toFixed(2)+"s";
+    c.querySelector(".halo").style.animationDelay=(-i*.91).toFixed(2)+"s";
     cands.appendChild(c);
   }
+  var hall=document.getElementById("hall");
+  if(hush){if(hall)hall.classList.add("lit");return;}
   /* gold dust, drifting up out of the candlelight */
   n=mob?14:22;
   for(i=0;i<n;i++){
@@ -930,6 +952,9 @@ function enchantHall(){
     motes.appendChild(s);
   }
   setTimeout(shootStar,9000+Math.random()*12000);
+  requestAnimationFrame(function(){
+    requestAnimationFrame(function(){if(hall)hall.classList.add("lit")});
+  });
 }
 function shootStar(){
   if(hush)return;
@@ -1013,13 +1038,19 @@ function route(){
 
 function welcome(){
   paint(
-   '<p class="eyebrow">A very old hat, in four movements</p>'+
-   '<h1>The Sorting</h1>'+flourish()+
-   '<p class="sub">Twenty-seven questions, and about eight minutes. Answer honestly rather than cleverly &mdash; the Hat has been doing this for a thousand years and can tell the difference. It will not say one word about what it finds. Not today.</p>'+
-   '<label class="eyebrow" for="who" style="display:block">Who is being sorted?</label>'+
+   '<div class="hello">'+
+   '<p class="eyebrow">Hogwarts School of Witchcraft and Wizardry</p>'+
+   '<p class="bday">A very happy eleventh birthday</p>'+
+   '<h1>'+esc(CONFIG.student)+'</h1>'+flourish()+
+   '<p class="lead">You have been accepted. You are a witch &mdash; a budding one, just beginning, and already expected at school.</p>'+
+   '<p class="sub">Before anything else can be settled, the Sorting Hat would like twenty-seven honest answers. About eight minutes. Answer honestly rather than cleverly. It has been doing this for a thousand years, and it will not say one word about what it finds. Not today.</p>'+
+   '<p class="sub warm">Congratulations. The beginning starts here.</p>'+
+   '<label class="eyebrow who-label" for="who" style="display:block">Who is being sorted?</label>'+
    '<input type="text" id="who" value="'+esc(CONFIG.student)+'" autocomplete="off" spellcheck="false">'+
    '<p class="err" id="err"></p>'+
-   '<button class="seal-btn wide" id="go">Put on the Hat</button>');
+   '<button class="seal-btn wide" id="go">Put on the Hat</button>'+
+   '</div>');
+  document.body.classList.add("mood-hello");
   var input=document.getElementById("who"),err=document.getElementById("err");
   input.addEventListener("input",function(){err.textContent=""});
   input.addEventListener("keydown",function(e){if(e.key==="Enter")go()});
@@ -1028,7 +1059,7 @@ function welcome(){
     var v=input.value.trim();
     if(!v){err.textContent="The Hat needs a name before it can begin.";input.focus();return}
     name_=v;idx=0;score={G:0,H:0,R:0,S:0};picks={G:0,H:0,R:0,S:0};trail=[];buildDeck();
-    chime("tap");burstCenter("#D4A84B",18);
+    chime("letter");
     interstitial(0);
   }
 }
@@ -1063,7 +1094,7 @@ function question(){
   h+='<p class="q">'+esc(it.q)+'</p>';
   for(var i=0;i<opts.length;i++){h+='<button class="opt" data-i="'+i+'">'+esc(opts[i][0])+'</button>'}
   if(idx>0)h+='<button class="ghost" id="back">&larr; Back</button>';
-  paint(h);
+  paint(h,true);
   var os=stage.querySelectorAll(".opt");
   for(var j=0;j<os.length;j++){os[j].onclick=function(){choose(parseInt(this.getAttribute("data-i"),10))}}
   var b=document.getElementById("back");
@@ -1078,12 +1109,6 @@ function question(){
 function choose(i){
   var it=QUESTIONS[idx],w=MOVEMENTS[it.m].w,s=deck[idx][i][1],top=null,best=0;
   for(var k in s){if(s[k]>best){best=s[k];top=k}}
-  var btn=stage.querySelector('.opt[data-i="'+i+'"]');
-  if(btn){
-    var box=btn.getBoundingClientRect();
-    burst(box.left+box.width*0.12,box.top+box.height/2,(top&&HOUSES[top].c)||"#D4A84B",14);
-  }
-  chime("tap");
   for(var k in s){score[k]+=s[k]*w}
   if(top)picks[top]++;
   trail.push({s:s,top:top,w:w});
