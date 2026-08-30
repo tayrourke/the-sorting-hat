@@ -19,7 +19,7 @@
   --parch:#F3E8CE; --parch-deep:#E4D3AC; --dim:#B49C74;
   --wax:#6E1219; --wax-lit:#96222B; --wax-dark:#450A0E;
   --gold:#C9A227; --gold-lit:#E8C56A; --gold-soft:rgba(201,162,39,.32);
-  --house:#C9A227; --house-lit:#F1E0AA; --house-deep:#8A6A1C; --house-wash:#4A2A08;
+  --house:#C9A227; --house-lit:#F1E0AA; --house-deep:#8A6A1C; --house-wash:#4A2A08; --house-metal:#E8C56A;
   --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23g)'/%3E%3C/svg%3E");
   --display:"IM Fell English SC",Georgia,serif;
   --letterface:"IM Fell English",Georgia,serif;
@@ -152,6 +152,10 @@ input[type=text]::placeholder{color:#7A684C;font-style:italic}
 @supports not ((-webkit-background-clip:text) or (background-clip:text)){
   .house{-webkit-text-fill-color:var(--house);background:none}}
 .house-line{font-size:17px;line-height:1.62;margin:0 0 32px;opacity:.92}
+.cheer{font-family:var(--letterface);font-style:italic;font-size:clamp(18px,4.6vw,23px);
+  color:var(--house-metal);margin:2px 0 16px;letter-spacing:.01em;
+  text-shadow:0 0 22px color-mix(in srgb,var(--house) 55%,transparent)}
+.raven-banner{color:var(--house-lit)!important;letter-spacing:.22em}
 .reveal{animation:bloom 1.2s cubic-bezier(.16,.8,.3,1) forwards}
 @keyframes bloom{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:none}}
 .tally{position:relative;border-top:1px solid var(--gold-soft);padding-top:24px;margin-top:10px}
@@ -507,6 +511,74 @@ body.mood-reveal .taper .flame{
   box-shadow:0 0 12px var(--house-lit),0 0 30px var(--house),0 0 60px var(--house)}
 body.mood-reveal .taper .halo{
   background:radial-gradient(circle,color-mix(in srgb,var(--house) 40%,transparent) 0%,transparent 68%)}
+
+/* Ravenclaw celebration: navy, bronze, starlight */
+body.house-R{
+  background:
+    radial-gradient(ellipse 130% 62% at 50% -14%,rgba(47,98,196,.42),transparent 64%),
+    radial-gradient(ellipse 70% 28% at 50% 2%,rgba(201,162,74,.16),transparent 70%),
+    radial-gradient(ellipse 96% 44% at 50% 114%,rgba(18,40,96,.34),transparent 66%),
+    linear-gradient(180deg,#0A1228 0%,#070814 48%,#05040A 100%)}
+body.house-R.mood-hat #veil{background:
+  radial-gradient(ellipse 60% 50% at 50% 52%,rgba(6,10,22,.94) 0%,rgba(6,10,22,.7) 44%,rgba(6,10,22,.18) 80%),
+  radial-gradient(ellipse at center,transparent 30%,rgba(0,0,0,.72) 100%)}
+body.house-R .hat-stage .aura{
+  background:radial-gradient(closest-side,rgba(47,98,196,.32) 0%,rgba(201,162,74,.16) 44%,transparent 68%)}
+body.house-R.mood-reveal #wash{background:
+  radial-gradient(124% 78% at 50% -12%,rgba(28,62,150,.78) 0%,transparent 62%),
+  radial-gradient(70% 42% at 50% 108%,rgba(201,162,74,.28) 0%,transparent 58%)}
+body.house-R.mood-reveal #hall::before{
+  background:radial-gradient(ellipse 88% 100% at 50% -8%,rgba(90,140,230,.32),transparent 70%)}
+body.house-R.mood-reveal #stars i{background:#EAF1FF;box-shadow:0 0 8px rgba(170,200,255,.95)}
+body.house-R.mood-reveal .taper .flame{
+  box-shadow:0 0 12px #D2E2FF,0 0 28px #2F62C4,0 0 52px rgba(201,162,74,.55)}
+body.house-R .flourish i{
+  background:linear-gradient(90deg,transparent,rgba(201,162,74,.95) 50%,rgba(90,140,220,.2))}
+body.house-R .flourish b{border-color:#C9A24A;box-shadow:0 0 10px rgba(90,140,220,.55)}
+body.house-R .house{
+  filter:drop-shadow(0 2px 0 rgba(0,0,0,.45)) drop-shadow(0 0 42px var(--house)) drop-shadow(0 0 72px var(--house-metal))}
+body.house-R .tally::before{border-color:#C9A24A;box-shadow:0 0 8px rgba(90,140,220,.5)}
+body.house-R .tally{border-top-color:rgba(90,140,220,.35)}
+body.house-R .cert{
+  box-shadow:
+    inset 0 0 44px rgba(148,114,58,.2),
+    inset 0 0 0 1px rgba(148,114,58,.3),
+    0 0 0 1px rgba(47,98,196,.22),
+    0 30px 62px rgba(0,0,0,.6),
+    0 0 56px rgba(47,98,196,.32)}
+body.house-R .cert .hs{color:#16306E;text-shadow:0 1px 0 rgba(255,255,255,.45),0 0 18px rgba(47,98,196,.2)}
+body.house-R .cert .corners i{border-color:rgba(47,98,196,.42)}
+body.house-R .cert .corners i::after{background:rgba(201,162,74,.75)}
+body.house-R .cert .stamp{
+  box-shadow:inset 0 -5px 13px rgba(0,0,0,.38),inset 0 4px 10px rgba(255,255,255,.2),
+    0 4px 13px rgba(0,0,0,.35),0 0 28px rgba(201,162,74,.45)}
+body.house-R .cert .k{color:#3A4A78}
+body.house-R .seal-btn{
+  background:
+    radial-gradient(120% 100% at 28% 14%,rgba(210,226,255,.28),transparent 52%),
+    radial-gradient(circle at 32% 20%,#4A78D4,#1E3F96 62%,#12245A 100%);
+  box-shadow:inset 0 1px 0 rgba(210,226,255,.24),inset 0 -2px 6px rgba(0,0,0,.4),
+    0 1px 0 #0C1840,0 10px 26px rgba(0,0,0,.5),0 0 20px rgba(47,98,196,.35)}
+body.house-R .seal-btn:hover,body.house-R .seal-btn:focus-visible{
+  background:
+    radial-gradient(120% 100% at 28% 14%,rgba(230,238,255,.35),transparent 52%),
+    radial-gradient(circle at 32% 20%,#5B88E0,#2F62C4 64%,#16306E 100%);
+  box-shadow:inset 0 1px 0 rgba(230,238,255,.3),inset 0 -2px 6px rgba(0,0,0,.4),
+    0 1px 0 #0C1840,0 12px 30px rgba(20,40,100,.5),0 0 22px rgba(201,162,74,.35)}
+.ravensky{position:fixed;inset:0;z-index:2;pointer-events:none;
+  background-image:
+    radial-gradient(1.6px 1.6px at 7% 11%,rgba(220,232,255,.95) 40%,transparent 55%),
+    radial-gradient(1.2px 1.2px at 16% 24%,rgba(201,162,74,.8) 40%,transparent 55%),
+    radial-gradient(1px 1px at 24% 8%,rgba(210,226,255,.85) 40%,transparent 55%),
+    radial-gradient(1.4px 1.4px at 33% 16%,rgba(180,200,255,.7) 40%,transparent 55%),
+    radial-gradient(1px 1px at 41% 6%,rgba(201,162,74,.7) 40%,transparent 55%),
+    radial-gradient(1.8px 1.8px at 52% 13%,rgba(230,238,255,.95) 40%,transparent 55%),
+    radial-gradient(1px 1px at 61% 21%,rgba(170,196,255,.7) 40%,transparent 55%),
+    radial-gradient(1.3px 1.3px at 72% 9%,rgba(201,162,74,.75) 40%,transparent 55%),
+    radial-gradient(1px 1px at 81% 18%,rgba(210,226,255,.8) 40%,transparent 55%),
+    radial-gradient(1.5px 1.5px at 91% 12%,rgba(180,200,255,.75) 40%,transparent 55%),
+    radial-gradient(1px 1px at 12% 72%,rgba(201,162,74,.45) 40%,transparent 55%),
+    radial-gradient(1.2px 1.2px at 88% 68%,rgba(210,226,255,.5) 40%,transparent 55%)}
 body.mood-hello{
   background:
     radial-gradient(ellipse 130% 62% at 50% -16%,rgba(160,42,40,.42),transparent 64%),
@@ -538,6 +610,7 @@ body.mood-hello{
   #stars i{opacity:.6}
   .taper .halo{opacity:.85}
   #hall{opacity:1}
+  .cheer{opacity:1}
 }
 </style>
 </head>
@@ -734,11 +807,13 @@ H:{name:"Hufflepuff",c:"#E3AE2E",lit:"#FFE9A8",deep:"#8A6208",wash:"#5E3F06",mar
    loud:"Loyal. Genuinely loyal, which is far rarer than it sounds.",
    quiet:"And a sense of fairness that will not bend, even when bending would be easier.",
    cert:"For loyalty, patience, and work done without applause."},
-R:{name:"Ravenclaw",c:"#3A5EA8",lit:"#A9C0EE",deep:"#22376E",wash:"#101E4A",mark:"R",
-   line:"Sorted for a mind that will not sit still. Curiosity first, cleverness second, and the patience to keep asking after everyone else has stopped.",
-   loud:"A mind that notices things. It is already three questions ahead of me.",
+R:{name:"Ravenclaw",c:"#2F62C4",lit:"#D2E2FF",deep:"#16306E",wash:"#0A1848",metal:"#C9A24A",mark:"R",
+   line:"Welcome to Ravenclaw. For a mind that will not sit still — curiosity first, cleverness second, and the joy of finding out.",
+   loud:"Oh, this is a bright one. A mind already three questions ahead of me, and happy about it.",
    quiet:"And a curiosity that is going to get you into trouble one day. The good kind.",
-   cert:"For a curious mind that keeps asking after everyone else has stopped."},
+   settle:"Ravenclaw. The tower has been waiting for you.",
+   cheer:"Congratulations. You belong in the tower.",
+   cert:"For a curious mind, a quick heart, and the questions that will take you everywhere."},
 S:{name:"Slytherin",c:"#1E7A4D",lit:"#93E2B8",deep:"#12563A",wash:"#0A3221",mark:"S",
    line:"Sorted for ambition and resourcefulness. A house that decides what it wants and then quietly works out how.",
    loud:"Ambition. Clear as a bell, and no apology for it either.",
@@ -823,6 +898,9 @@ function dressHouse(w){
   r.setProperty("--house-lit",w.lit||w.c);
   r.setProperty("--house-deep",w.deep||w.c);
   r.setProperty("--house-wash",w.wash||w.c);
+  r.setProperty("--house-metal",w.metal||w.lit||w.c);
+  document.body.classList.remove("house-G","house-H","house-R","house-S");
+  if(w.mark)document.body.classList.add("house-"+w.mark);
 }
 /* an old hat with a crease for a mouth — drawn here, not borrowed */
 function hatSvg(){
@@ -870,7 +948,7 @@ function hatSvg(){
   '</svg>';
 }
 function paint(html,soft){
-  document.body.classList.remove("mood-hat","mood-reveal","mood-hello");
+  document.body.classList.remove("mood-hat","mood-reveal","mood-hello","house-G","house-H","house-R","house-S");
   stage.classList.remove("arrive");
   stage.innerHTML=html;
   if(!hush && !soft){void stage.offsetWidth;stage.classList.add("arrive")}
@@ -1016,6 +1094,7 @@ function chime(kind){
   else if(kind==="seal"){tone(196,.28,"triangle",.035);tone(294,.4,"sine",.022)}
   else if(kind==="letter"){tone(349,.35,"sine",.028);tone(440,.45,"triangle",.016)}
   else if(kind==="reveal"){tone(261,.22,"sine",.03);setTimeout(function(){tone(329,.28,"sine",.024)},90);setTimeout(function(){tone(392,.45,"sine",.02)},180)}
+  else if(kind==="raven"){tone(392,.16,"sine",.03);setTimeout(function(){tone(523,.2,"sine",.026)},70);setTimeout(function(){tone(659,.26,"triangle",.02)},150);setTimeout(function(){tone(784,.5,"sine",.016)},240)}
 }
 
 function buildDeck(){
@@ -1192,13 +1271,15 @@ function letter(s){
 function deliberate(s){
   var r=ranked(s.score,s.picks,s.house);
   var lines=["Hmm. "+s.name+". Let me have a proper look at you.",
-             HOUSES[r[0]].loud,HOUSES[r[1]].quiet,"Yes. I think that settles it."];
+             HOUSES[r[0]].loud,HOUSES[r[1]].quiet,
+             HOUSES[r[0]].settle||"Yes. I think that settles it."];
   var h='<div class="hat-think"><p class="eyebrow">The Hat is thinking</p>'+
         '<div class="hat-stage"><span class="aura" aria-hidden="true"></span>'+
         '<span class="pool" aria-hidden="true"></span>'+hatSvg()+'</div>';
   for(var i=0;i<lines.length;i++){h+='<p class="murmur" id="m'+i+'">'+esc(lines[i])+'</p>'}
   h+='</div>';
   paint(h);
+  if(r[0]==="R")document.body.classList.add("house-R");
   document.body.classList.add("mood-hat");
   if(!hush){
     var st=stage.querySelector(".hat-stage");
@@ -1215,7 +1296,7 @@ function deliberate(s){
   chime("seal");
   lines.forEach(function(_,i){setTimeout(function(){
     var el=document.getElementById("m"+i);if(el)el.classList.add("show");
-    if(el)burst(window.innerWidth/2,el.getBoundingClientRect().top, "#D4A84B",8);
+    if(el)burst(window.innerWidth/2,el.getBoundingClientRect().top, r[0]==="R"?(i%2?"#C9A24A":"#9BB6F0"):"#D4A84B",8);
   },300+i*1600)});
   setTimeout(function(){reveal(s)},300+lines.length*1600+800);
 }
@@ -1224,8 +1305,12 @@ function reveal(s){
   var total=s.score.G+s.score.H+s.score.R+s.score.S||1;
   dressHouse(win);
   document.getElementById("wash").classList.add("on");
-  var h='<div class="reveal"><p class="eyebrow">'+esc(s.name)+', the Hat has decided</p>'+flourish()+
-        '<p class="house">'+win.name+'</p><p class="house-line">'+win.line+'</p>'+
+  var raven=r[0]==="R";
+  var h='<div class="reveal">'+(raven?'<div class="ravensky" aria-hidden="true"></div>':'')+
+        '<p class="eyebrow'+(raven?' raven-banner':'')+'">'+(raven?esc(s.name)+' — the Hat is certain':esc(s.name)+', the Hat has decided')+'</p>'+flourish()+
+        '<p class="house">'+win.name+'</p>'+
+        (win.cheer?'<p class="cheer">'+esc(win.cheer)+'</p>':'')+
+        '<p class="house-line">'+win.line+'</p>'+
         '<div class="tally"><p class="eyebrow">How close it was</p>';
   for(var i=0;i<r.length;i++){var k=r[i],p=Math.round(s.score[k]/total*100);
     h+='<div class="row"><div class="row-top"><span>'+HOUSES[k].name+'</span><span class="n">'+p+'%</span></div>'+
@@ -1237,11 +1322,18 @@ function reveal(s){
   else if(gap>=20){h+='<p class="note">No hesitation at all. The Hat knew by the second movement and spent the rest of it enjoying itself.</p>'}
   h+='<p style="margin-top:30px"><button class="seal-btn wide" id="toCert">Receive your certificate</button></p></div>';
   paint(h);
+  dressHouse(win);
   document.body.classList.add("mood-reveal");
-  chime("reveal");
+  chime(raven?"raven":"reveal");
   shock(win.lit||win.c);
-  burstCenter(win.lit||win.c,40);
-  setTimeout(function(){burstCenter(win.c,22)},260);
+  burstCenter(win.lit||win.c,raven?56:40);
+  if(raven){
+    setTimeout(function(){burstCenter(win.metal||"#C9A24A",28)},180);
+    setTimeout(function(){burstCenter(win.c,24)},360);
+    setTimeout(function(){burstCenter("#EAF1FF",18)},520);
+  }else{
+    setTimeout(function(){burstCenter(win.c,22)},260);
+  }
   setTimeout(function(){var b=stage.querySelectorAll(".track i");
     for(var i=0;i<b.length;i++){b[i].style.width=b[i].getAttribute("data-w")+"%"}},120);
   document.getElementById("toCert").onclick=function(){
@@ -1252,11 +1344,13 @@ function certificate(s,returning){
   var r=ranked(s.score,s.picks,s.house),win=HOUSES[r[0]];
   dressHouse(win);
   document.getElementById("wash").classList.add("on");
+  var raven=r[0]==="R";
   paint(
-   '<div class="reveal"><div class="cert parchment">'+
+   '<div class="reveal">'+(raven?'<div class="ravensky" aria-hidden="true"></div>':'')+
+   '<div class="cert parchment">'+
    '<span class="edge" aria-hidden="true"></span>'+
    '<span class="corners" aria-hidden="true"><i></i><i></i><i></i><i></i></span>'+
-   '<p class="k">Hogwarts School of Witchcraft and Wizardry</p>'+
+   '<p class="k">'+(raven?'Ravenclaw Tower · Hogwarts':'Hogwarts School of Witchcraft and Wizardry')+'</p>'+
    '<p class="who">'+esc(s.name)+'</p><p class="mid">has been sorted into</p>'+
    '<p class="hs">'+win.name+'</p><p class="why">'+win.cert+'</p>'+
    '<div class="stamp">'+win.mark+'</div>'+
@@ -1264,8 +1358,10 @@ function certificate(s,returning){
    '<p class="eyebrow" style="text-align:center;margin:20px 0 0">Screenshot this &mdash; it is the only copy</p>'+
    (returning?'<p style="text-align:center;margin-top:18px"><button class="ghost" id="replay">Watch the ceremony again</button></p>':'')+
    '</div>');
+  dressHouse(win);
   document.body.classList.add("mood-reveal");
-  burstCenter(win.c,20);
+  burstCenter(win.c,raven?28:20);
+  if(raven)setTimeout(function(){burstCenter(win.metal||"#C9A24A",16)},200);
   var rp=document.getElementById("replay");
   if(rp)rp.onclick=function(){document.getElementById("wash").classList.remove("on");deliberate(s)};
 }
